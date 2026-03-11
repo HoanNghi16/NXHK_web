@@ -1,6 +1,13 @@
 <?php
     include("../layout/layout.php");
+    include('../controller/user/userControl.php');
     $layout = new Layout();
+    $userControl = new userControl();
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $email = $_POST["email"];
+        $password = $_POST["password"];
+        $userControl->login($email, $password);
+    }
     
 ?>
 <!DOCTYPE html>
@@ -8,7 +15,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng ký</title>
+    <title>Đăng nhập</title>
     <link rel="stylesheet" href="../style/login.css">
 </head>
 <body>
@@ -21,21 +28,21 @@
 
             <h2>Đăng nhập</h2>
 
-            <form class="login-form">
+            <form class="login-form" name="loginForm" method="POST">
 
                 <div class="input-group">
                     <label>Email</label>
-                    <input type="email" placeholder="Nhập email của bạn">
+                    <input type="email" placeholder="Nhập email của bạn" name="email">
                 </div>
 
                 <div class="input-group">
                     <label>Mật khẩu</label>
-                    <input type="password" placeholder="Nhập mật khẩu">
+                    <input type="password" placeholder="Nhập mật khẩu" name="password">
                 </div>
 
                 <div class="login-options">
                     <label>
-                        <input type="checkbox"> Ghi nhớ đăng nhập
+                        <input type="checkbox" name="remember"> Ghi nhớ đăng nhập
                     </label>
 
                     <a href="#">Quên mật khẩu?</a>
