@@ -1,8 +1,13 @@
 <?php
+    session_start();
     include("../layout/layout.php");
     include('../controllers/user/userControl.php');
     $layout = new Layout();
     $userControl = new userControl();
+    if(isset($_SESSION['user_id'])){
+        header("Location: ../home.php");
+        exit();
+    }
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $email = $_POST["email"];
         $password = $_POST["password"];
@@ -20,7 +25,7 @@
 </head>
 <body>
     <?php
-        $layout->getHeader();
+        echo $layout->getHeader();
     ?>
     <div class="login-container">
         
@@ -61,7 +66,7 @@
 
     </div>
     <?php
-        $layout->getFooter();
+        echo $layout->getFooter();
     ?>
 </body>
 </html>

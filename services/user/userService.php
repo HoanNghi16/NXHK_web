@@ -1,5 +1,4 @@
 <?php
-    session_start();
     class UserService {
 
         private $conn;
@@ -54,13 +53,14 @@
 
             // hash password
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
+            $id = uniqid();
+            $default_role = "customer";
             // insert user
             $stmt = $this->conn->prepare(
-                "INSERT INTO user (email, password, name) VALUES (?, ?, ?)"
+                "INSERT INTO user (email, password, name, id, role) VALUES (?, ?, ?, ?, ?)"
             );
 
-            $stmt->bind_param("sss", $email, $hashedPassword, $name);
+            $stmt->bind_param("sssss", $email, $hashedPassword, $name, $id, $default_role);
 
             if ($stmt->execute()){
                 return true;
@@ -74,7 +74,7 @@
                 return "Vui lòng điền đầy đủ thông tin";
             }
 
-            $stmt = $this->conn->prepare("SELECT id, password FROM user WHERE email = ?");
+            $stmt = $this->conn->prepare("SELECT id, password, name, role FROM user WHERE email = ?");
             $stmt->bind_param("s", $email);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -84,10 +84,11 @@
             }
 
             $user = $result->fetch_assoc();
-
+    
             if (password_verify($password, $user['password'])){
-                // đăng nhập thành công
                 $_SESSION['user_id'] = $user['id'];
+                $_SESSION['user_name'] = $user['name'];
+                $_SESSION['user_role'] = $user['role'];
                 return true;
             } else {
                 return "Mật khẩu không đúng";

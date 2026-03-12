@@ -1,8 +1,15 @@
 <?php
+    session_start();
     include("../layout/layout.php");
     include('../controllers/user/userControl.php');
     $layout = new Layout();
     $userControl = new userControl();
+    if(isset($_SESSION['user_id'])){
+        $toast = new ToastController();
+        header("Location: ../home.php");
+        $toast->showToast("Bạn đã đăng nhập", "null", 3000);
+        exit();
+    }
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $email = $_POST["email"];
         $password = $_POST["password"];
@@ -24,7 +31,7 @@
 <body>
 
 <?php
-    $layout->getHeader();
+    echo $layout->getHeader();
 ?>
 
 <div class="login-container">
@@ -75,7 +82,7 @@
 </div>
 
 <?php
-    $layout->getFooter();
+    echo $layout->getFooter();
 ?>
 
 </body>

@@ -7,11 +7,11 @@
 }
 .login-container{
     background-image: linear-gradient(135deg, #331d4e, #0f2c6d);
-    height: 80dvh;
+    height: 100dvh;
     display:flex;
     align-items:center;
     justify-content:center;
-    padding:40px;
+    padding:100px;
 }
 
 .login-card{

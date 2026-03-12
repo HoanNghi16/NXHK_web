@@ -1,5 +1,9 @@
-<?php include 'layout/layout.php';
+<?php
+    session_start();
+    include('layout/layout.php');
     $layout = new Layout();
+    $header = $layout->getHeader();
+    $footer = $layout->getFooter();
 ?>
 <!DOCTYPE html>
 <html lang="vi">
@@ -15,7 +19,7 @@
   <body>
     <div class="container">
       <?php
-          $layout->getHeader();
+          echo $header;
       ?>
       <section class="hero">
 
@@ -91,7 +95,7 @@
 
       </section>
       <?php
-          $layout->getFooter();
+          echo $footer;
       ?>
     </div>
   </body>
