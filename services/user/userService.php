@@ -7,8 +7,61 @@
             $this->conn = $conn;
         }
 
-        private function validationRegister($email, $password, $name, $confirmPassword){
+        public function createOtp($email, $password, $name){
 
+            $otp = rand(100000,999999);
+
+            $_SESSION['otp'] = $otp;
+            $_SESSION['register_email'] = $email;
+            $_SESSION['register_password'] = $password;
+            $_SESSION['register_name'] = $name;
+
+            return $otp;
+        }
+
+        public function verifyOtp($inputOtp){
+
+            if(!isset($_SESSION['otp'])){
+                return "OTP đã hết hạn";
+            }
+
+            if($_SESSION['otp'] != $inputOtp){
+                return "OTP không đúng";
+            }
+
+            $email = $_SESSION['register_email'];
+            $password = $_SESSION['register_password'];
+            $name = $_SESSION['register_name'];
+
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+            $id = uniqid();
+            $role = "customer";
+
+            $stmt = $this->conn->prepare(
+                "INSERT INTO user (email,password,name,id,role) VALUES (?,?,?,?,?)"
+            );
+
+            $stmt->bind_param("sssss",$email,$hashedPassword,$name,$id,$role);
+
+            if($stmt->execute()){
+
+                unset($_SESSION['otp']);
+
+                return true;
+            }
+
+            return "Tạo tài khoản thất bại";
+        }
+
+        public function validationRegister($email, $password, $name, $confirmPassword){
+            $stmt = $this->conn->prepare("SELECT id FROM user WHERE email = ?");
+            $stmt->bind_param("s", $email);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            if ($result->num_rows > 0){
+                return "Email đã tồn tại";
+            }
             if (
                 trim($email) === "" ||
                 trim($password) === "" ||
@@ -42,14 +95,6 @@
             }
 
             // kiểm tra email tồn tại
-            $stmt = $this->conn->prepare("SELECT id FROM user WHERE email = ?");
-            $stmt->bind_param("s", $email);
-            $stmt->execute();
-            $result = $stmt->get_result();
-
-            if ($result->num_rows > 0){
-                return "Email đã tồn tại";
-            }
 
             // hash password
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
@@ -89,6 +134,7 @@
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['user_name'] = $user['name'];
                 $_SESSION['user_role'] = $user['role'];
+                $_SESSION['user_email'] = $email;
                 return true;
             } else {
                 return "Mật khẩu không đúng";

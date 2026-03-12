@@ -89,11 +89,11 @@
                     <a class="logo" href="/nxhk_web/home.php">NeoTech</a>
 
                     <ul class="menu">
-                        <li><a href="#">Trang chủ</a></li>
-                        <li><a href="#">Laptop</a></li>
-                        <li><a href="#">Điện thoại</a></li>
-                        <li><a href="#">Gaming</a></li>
-                        <li><a href="#">Phụ kiện</a></li>
+                        <li><a href="/nxhk_web/home.php">Trang chủ</a></li>
+                        <li><a href="/nxhk_web/products/laptop.php">Laptop</a></li>
+                        <li><a href="/nxhk_web/products/phone.php">Điện thoại</a></li>
+                        <li><a href="/nxhk_web/products/gaming.php">Gaming</a></li>
+                        <li><a href="/nxhk_web/products/accessories.php">Phụ kiện</a></li>
                     </ul>'.$buttons.'
                 </div>
 

@@ -20,7 +20,6 @@
     <div class="container">
       <?php
           echo $header;
-          echo "test update"
       ?>
       <section class="hero">
 
