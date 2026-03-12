@@ -1,6 +1,15 @@
 <?php
     include("../layout/layout.php");
+    include('../controllers/user/userControl.php');
     $layout = new Layout();
+    $userControl = new userControl();
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $email = $_POST["email"];
+        $password = $_POST["password"];
+        $name = $_POST["name"];
+        $confirmPassword = $_POST["confirmPassword"];
+        $userControl->register($email, $password, $name, $confirmPassword);
+    }
 ?>
 
 <!DOCTYPE html>
@@ -24,26 +33,26 @@
 
         <h2>Đăng ký</h2>
 
-        <form class="login-form">
+        <form class="login-form" method="POST">
 
             <div class="input-group">
                 <label>Họ và tên</label>
-                <input type="text" placeholder="Nhập họ và tên">
+                <input type="text" placeholder="Nhập họ và tên" name="name">
             </div>
 
             <div class="input-group">
                 <label>Email</label>
-                <input type="email" placeholder="Nhập email">
+                <input type="email" placeholder="Nhập email" name="email">
             </div>
 
             <div class="input-group">
                 <label>Mật khẩu</label>
-                <input type="password" placeholder="Nhập mật khẩu">
+                <input type="password" placeholder="Nhập mật khẩu" name="password">
             </div>
 
             <div class="input-group">
                 <label>Xác nhận mật khẩu</label>
-                <input type="password" placeholder="Nhập lại mật khẩu">
+                <input type="password" placeholder="Nhập lại mật khẩu" name="confirmPassword">
             </div>
 
             <div class="login-options">

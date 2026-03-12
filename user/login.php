@@ -1,6 +1,6 @@
 <?php
     include("../layout/layout.php");
-    include('../controller/user/userControl.php');
+    include('../controllers/user/userControl.php');
     $layout = new Layout();
     $userControl = new userControl();
     if ($_SERVER["REQUEST_METHOD"] == "POST") {

@@ -90,6 +90,9 @@
         <button>Xem ngay</button>
 
       </section>
+      <?php
+          $layout->getFooter();
+      ?>
     </div>
   </body>
 </html>
