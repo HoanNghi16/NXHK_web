@@ -2,8 +2,6 @@
     session_start();
     include("../layout/layout.php");
     include('../controllers/user/userControl.php');
-    var_dump(getenv('GMAIL'));
-    var_dump(getenv('PASSWORD'));
     $layout = new Layout();
     $userControl = new userControl();
     if(isset($_SESSION['user_id'])){

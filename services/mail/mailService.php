@@ -2,13 +2,16 @@
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+use Dotenv\Dotenv;
 
 require __DIR__.'/../../vendor/autoload.php';
+
+$dotenv = Dotenv::createImmutable(__DIR__.'/../../');
+$dotenv->load();
 
 class MailService{
 
     public function sendOtp($email,$otp){
-
         $mail = new PHPMailer(true);
         try{
 
@@ -16,14 +19,13 @@ class MailService{
             $mail->Host = 'smtp.gmail.com';
             $mail->SMTPAuth = true;
 
-            $mail->Username = getenv('GMAIL');
-            $mail->Password = getenv('PASSWORD');
-            echo (json_encode($mail));
+            $mail->Username = $_ENV['GMAIL'];
+            $mail->Password = $_ENV['PASSWORD'];
 
             $mail->SMTPSecure = 'tls';
             $mail->Port = 587;
 
-            $mail->setFrom();
+            $mail->setFrom($_ENV['GMAIL'], "NXHK Shop");
 
             $mail->addAddress($email);
 

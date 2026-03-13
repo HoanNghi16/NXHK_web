@@ -6,12 +6,10 @@ include("../controllers/user/userControl.php");
 require_once("../config/database.php");
 require_once("../services/user/userService.php");
 require_once("../toast/toast.php");
-
 $userService = new UserService($conn);
 $toast = new ToastController();
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
-
     $otp = $_POST["otp"];
 
     $result = $userService->verifyOtp($otp);
