@@ -4,7 +4,7 @@
     include(__DIR__.'/../../services/user/userService.php');
     require_once(__DIR__ . "/../../toast/toast.php");
     include(__DIR__.'/../../services/mail/mailService.php');
-    
+
     class userControl{
         
         public function register($email, $password, $name, $confirmPassword){

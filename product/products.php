@@ -18,7 +18,7 @@
     <?php
         echo $layout->getHeader();
     ?>
-    <div class="container">
+    <div class="product_container">
 
         <div class="products-layout">
 
@@ -27,25 +27,25 @@
                 <h3>Danh mục</h3>
 
                 <ul>
-                    <li><a href="#">Tất cả</a></li>
-                    <li><a href="#">Laptop</a></li>
-                    <li><a href="#">Điện thoại</a></li>
-                    <li><a href="#">Gaming</a></li>
-                    <li><a href="#">Phụ kiện</a></li>
+                    <li><a href="?cate=">Tất cả</a></li>
+                    <li><a href="?cate=laptop">Laptop</a></li>
+                    <li><a href="?cate=phone">Điện thoại</a></li>
+                    <li><a href="?cate=gaming">Gaming</a></li>
+                    <li><a href="?cate=accessories">Phụ kiện</a></li>
                 </ul>
 
                 <h3>Khoảng giá</h3>
 
                 <ul>
-                    <li><a href="#">Dưới 5 triệu</a></li>
-                    <li><a href="#">5 - 10 triệu</a></li>
-                    <li><a href="#">10 - 20 triệu</a></li>
-                    <li><a href="#">Trên 20 triệu</a></li>
+                    <li><a href="?price=5">Dưới 5 triệu</a></li>
+                    <li><a href="?price=10">5 - 10 triệu</a></li>
+                    <li><a href="?price=20">10 - 20 triệu</a></li>
+                    <li><a href="?price=more">Trên 20 triệu</a></li>
                 </ul>
             </aside>
 
             <!-- product grid -->
-            <section class="products">
+            <section class="products-show">
 
                 <div class="products-header">
                     <h2 style="color: white;"><?php echo $title; ?></h2>

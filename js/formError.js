@@ -1,3 +1,18 @@
+function validPassword(e){
+    console.log('tới đây rồi nè')
+    let password = e.value;
+    let error = document.getElementById('password-error');
+    if (!password || password == ""){
+        error.innerHTML = "Mật khẩu không được để trống";
+        return false;
+    }else if(password.length < 6){
+        error.innerHTML = "Mật khẩu phải có ít nhất 6 ký tự";
+        return false;
+    }else{
+        error.innerHTML = "";
+        return true;
+    }
+}
 function validEmail(e) {
     console.log('tới đây rồi nè')
     email = e.value;

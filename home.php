@@ -39,12 +39,10 @@
         <h2>Danh mục</h2>
 
         <div class="category-grid">
-
-          <div class="category-card">Laptop</div>
-          <div class="category-card">Điện thoại</div>
-          <div class="category-card">Gaming</div>
-          <div class="category-card">Phụ kiện</div>
-
+          <a style="text-decoration: none; color: white;" class="category-card" href="/nxhk_web/product/products.php?cate=laptop">Laptop</a>
+          <a style="text-decoration: none; color: white;" class="category-card" href="/nxhk_web/product/products.php?cate=phone">Điện thoại</a>
+          <a style="text-decoration: none; color: white;" class="category-card" href="/nxhk_web/product/products.php?cate=gaming">Gaming</a>
+          <a style="text-decoration: none; color: white;" class="category-card" href="/nxhk_web/product/products.php?cate=accessories">Phụ kiện</a>
         </div>
 
       </section>
@@ -52,7 +50,7 @@
 
         <h2>Sản phẩm nổi bật</h2>
 
-        <div class="product-grid">
+        <div class="product-home-grid">
 
           <div class="product-card">
             <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8">

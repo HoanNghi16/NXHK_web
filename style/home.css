@@ -64,9 +64,11 @@ body{
     display:grid;
     grid-template-columns:repeat(4,1fr);
     gap:20px;
+    text-decoration: none;
 }
 
 .category-card{
+    text-decoration :none;
     background:#020617;
     padding:40px;
     text-align:center;
@@ -96,7 +98,7 @@ body{
     font-size:32px;
 }
 
-.product-grid{
+.product-home-grid{
     display:grid;
     grid-template-columns:repeat(4,1fr);
     gap:25px;
@@ -162,7 +164,3 @@ body{
     border-radius:6px;
     cursor:pointer;
 }
-
-
-/* FOOTER */
-
