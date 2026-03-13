@@ -90,10 +90,10 @@
 
                     <ul class="menu">
                         <li><a href="/nxhk_web/home.php">Trang chủ</a></li>
-                        <li><a href="/nxhk_web/products/laptop.php">Laptop</a></li>
-                        <li><a href="/nxhk_web/products/phone.php">Điện thoại</a></li>
-                        <li><a href="/nxhk_web/products/gaming.php">Gaming</a></li>
-                        <li><a href="/nxhk_web/products/accessories.php">Phụ kiện</a></li>
+                        <li><a href="/nxhk_web/product/products.php?cate=laptop">Laptop</a></li>
+                        <li><a href="/nxhk_web/product/products.php?cate=phone">Điện thoại</a></li>
+                        <li><a href="/nxhk_web/product/products.php?cate=gaming">Gaming</a></li>
+                        <li><a href="/nxhk_web/product/products.php?cate=accessories">Phụ kiện</a></li>
                     </ul>'.$buttons.'
                 </div>
 

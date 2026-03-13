@@ -34,7 +34,7 @@
             $name = $_SESSION['register_name'];
 
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-            $id = uniqid();
+            $id = uniqid(null,true);
             $role = "customer";
 
             $stmt = $this->conn->prepare(

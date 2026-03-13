@@ -30,8 +30,8 @@ class MailService{
             $mail->addAddress($email);
 
             $mail->isHTML(true);
-            $mail->Subject = 'Ma OTP dang ky tai khoan';
-            $mail->Body = "<h2>Ma OTP cua ban: $otp</h2>";
+            $mail->Subject = 'NXHK Neo Store';
+            $mail->Body = "<h2>Mã OTP của bạn: $otp</h2>";
 
             $mail->send();
 

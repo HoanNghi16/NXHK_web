@@ -26,6 +26,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng ký</title>
     <link rel="stylesheet" href="../style/login.css">
+    <script src="../js/formError.js"></script>
 </head>
 
 <body>
@@ -44,12 +45,14 @@
 
             <div class="input-group">
                 <label>Họ và tên</label>
-                <input type="text" placeholder="Nhập họ và tên" name="name">
+                <input type="text" placeholder="Nhập họ và tên" name="name" onkeyup="validName(this)">
+                <span style="color: #aa0a0a; font-size: 14px; margin-top: 3px;" class="input-error" id="name-error"></span>
             </div>
 
             <div class="input-group">
                 <label>Email</label>
-                <input type="email" placeholder="Nhập email" name="email">
+                <input type="email" placeholder="Nhập email" name="email" onkeyup="validEmail(this)">
+                <span style="color: #aa0a0a; font-size: 14px; margin-top: 3px;" class="input-error" id="email-error"></span>
             </div>
 
             <div class="input-group">
