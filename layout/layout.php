@@ -13,7 +13,7 @@
             $buttons = $this->getUserButtons();
             return '
             <style>
-                header{
+                .layout-header{
                     position:sticky;
                     top:0;
                     background:#020617;
@@ -83,7 +83,7 @@
                 }
 
             </style>
-            <header>
+            <header class="layout-header">
                 <div class="navbar">
 
                     <a class="logo" href="/nxhk_web/home.php">NeoTech</a>
