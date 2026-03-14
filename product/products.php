@@ -1,9 +1,12 @@
 <?php
     session_start();
     include("../layout/layout.php");
+    include("../controllers/product/productControl.php");
+    $productControl = new ProductControl();
     $layout = new Layout();
     $title = $_GET['cate'] ?? "Tất cả sản phẩm";
     $title = ucfirst($title);
+    
 ?>
 
 <!DOCTYPE html>
@@ -26,22 +29,40 @@
             <aside class="filter">
                 <h3>Danh mục</h3>
 
-                <ul>
-                    <li><a href="?cate=">Tất cả</a></li>
-                    <li><a href="?cate=laptop">Laptop</a></li>
-                    <li><a href="?cate=phone">Điện thoại</a></li>
-                    <li><a href="?cate=gaming">Gaming</a></li>
-                    <li><a href="?cate=accessories">Phụ kiện</a></li>
-                </ul>
-
+                <form method="GET">
+                    <ul>
+                        <li>
+                            <button style="outline: none; background: none; border: none; color: white;"  name="cate" value="">Tất cả</button>
+                        </li>
+                        <li>
+                            <button style="outline: none; background: none; border: none; color: white;"  name="cate" value="laptop">Laptop</button>
+                        </li>
+                        <li>
+                            <button style="outline: none; background: none; border: none; color: white;"  name="cate" value="phone">Điện thoại</button>
+                        </li>
+                        <li>
+                            <button style="outline: none; background: none; border: none; color: white;"  name="cate" value="gaming">Gaming</button>
+                        </li>
+                        <li>
+                            <button style="outline: none; background: none; border: none; color: white;"  name="cate" value="accessories">Phụ kiện</button>
+                        </li>
+                    </ul>
                 <h3>Khoảng giá</h3>
-
-                <ul>
-                    <li><a href="?price=5">Dưới 5 triệu</a></li>
-                    <li><a href="?price=10">5 - 10 triệu</a></li>
-                    <li><a href="?price=20">10 - 20 triệu</a></li>
-                    <li><a href="?price=more">Trên 20 triệu</a></li>
-                </ul>
+                    <ul>
+                        <li>
+                            <button style="outline: none; background: none; border: none; color: white;" class="cate_button" name="price" value="5">Dưới 5 triệu</button>
+                        </li>
+                        <li>
+                            <button style="outline: none; background: none; border: none; color: white;" class="cate_button" name="price" value="10">5 - 10 triệu</button>
+                        </li>
+                        <li>
+                            <button style="outline: none; background: none; border: none; color: white;" class="cate_button" name="price" value="20">10 - 20 triệu</button>
+                        </li>
+                        <li>
+                            <button style="outline: none; background: none; border: none; color: white;" class="cate_button" name="price" value="more">Trên 20 triệu</button>
+                        </li>
+                    </ul>
+                </form>
             </aside>
 
             <!-- product grid -->
@@ -59,36 +80,11 @@
                 </div>
 
                 <div class="product-grid">
-
-                    <div class="product-card">
-                        <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8">
-                        <h4>Macbook Pro M3</h4>
-                        <p class="price">42.000.000đ</p>
-                        <button>Mua ngay</button>
-                    </div>
-
-                    <div class="product-card">
-                        <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9">
-                        <h4>iPhone 15 Pro</h4>
-                        <p class="price">29.000.000đ</p>
-                        <button>Mua ngay</button>
-                    </div>
-
-                    <div class="product-card">
-                        <img src="https://images.unsplash.com/photo-1587202372775-989f1d1e5b9e">
-                        <h4>Gaming Mouse</h4>
-                        <p class="price">1.200.000đ</p>
-                        <button>Mua ngay</button>
-                    </div>
-
-                    <div class="product-card">
-                        <img src="https://images.unsplash.com/photo-1580910051074-3eb694886505">
-                        <h4>Airpods Pro</h4>
-                        <p class="price">6.500.000đ</p>
-                        <button>Mua ngay</button>
-                    </div>
-
+                    <?php
+                        $productControl->fetchProducts($_GET['cate'] ?? "", $_GET['price'] ?? "", $_GET['sort'] ?? "", $_GET['page'] ?? 1);
+                    ?>
                 </div>
+
 
             </section>
 

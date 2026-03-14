@@ -2,6 +2,7 @@
     session_start();
     include("./layout/layout.php");
     $layout = new Layout();
+    
 ?>
 
 <!DOCTYPE html>
@@ -12,7 +13,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Giới thiệu | NeoTech</title>
-
     <link rel="stylesheet" href="./style/intro.css">
 
 </head>
@@ -87,7 +87,7 @@
     </section>
 
 
-    <section class="teacher">
+    <section class="teacher" style="margin-top: 50px;">
 
         <h2>Giảng viên hướng dẫn</h2>
 
