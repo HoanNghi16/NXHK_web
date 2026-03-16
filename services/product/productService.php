@@ -75,8 +75,8 @@ class ProductService
                 $sql .= " ORDER BY price DESC";
             }
         }
-        $offset = ($page - 1) * 10;
-        $sql .= " LIMIT 10 OFFSET ".$offset;
+        $offset = ($page - 1) * 12;
+        $sql .= " LIMIT 12 OFFSET ".$offset;
         $stmt = $this->conn->prepare($sql);
         if(!$stmt){
             die("SQL Error: " . $this->conn->error);

@@ -27,25 +27,25 @@
     <?php
         echo $layout->getHeader();
     ?>
-    <div class="login-container">
+    <div class="loginContainer">
         
-        <div class="login-card">
+        <div class="loginCard">
 
             <h2>Đăng nhập</h2>
 
-            <form class="login-form" name="loginForm" method="POST">
+            <form class="loginForm" name="loginForm" method="POST">
 
-                <div class="input-group">
+                <div class="inputGroup">
                     <label>Email</label>
                     <input type="email" placeholder="Nhập email của bạn" name="email">
                 </div>
 
-                <div class="input-group">
+                <div class="inputGroup">
                     <label>Mật khẩu</label>
                     <input type="password" placeholder="Nhập mật khẩu" name="password">
                 </div>
 
-                <div class="login-options">
+                <div class="loginOptions">
                     <label>
                         <input type="checkbox" name="remember"> Ghi nhớ đăng nhập
                     </label>
@@ -53,9 +53,9 @@
                     <a href="#">Quên mật khẩu?</a>
                 </div>
 
-                <button class="login-btn">Đăng nhập</button>
+                <button class="loginBtn">Đăng nhập</button>
 
-                <p class="register-text">
+                <p class="registerText">
                     Chưa có tài khoản?
                     <a href="register.php">Đăng ký</a>
                 </p>

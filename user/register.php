@@ -40,46 +40,46 @@
     echo $layout->getHeader();
 ?>
 
-<div class="login-container">
+<div class="loginContainer">
         
-    <div class="login-card">
+    <div class="loginCard">
 
         <h2>Đăng ký</h2>
 
-        <form class="login-form" method="POST">
+        <form class="loginForm" method="POST">
 
-            <div class="input-group">
+            <div class="inputGroup">
                 <label>Họ và tên</label>
                 <input type="text" placeholder="Nhập họ và tên" name="name" onblur="validName(this)" onkeyup="validName(this)">
                 <span style="color: #aa0a0a; font-size: 14px; margin-top: 3px;" class="input-error" id="name-error"></span>
             </div>
 
-            <div class="input-group">
+            <div class="inputGroup">
                 <label>Email</label>
                 <input type="email" placeholder="Nhập email" name="email" onblur="validEmail(this)" onkeyup="validEmail(this)">
                 <span style="color: #aa0a0a; font-size: 14px; margin-top: 3px;" class="input-error" id="email-error"></span>
             </div>
 
-            <div class="input-group">
+            <div class="inputGroup">
                 <label>Mật khẩu</label>
                 <input type="password" placeholder="Nhập mật khẩu" name="password" onblur="validPassword(this)" onkeyup="validPassword(this)">
                 <span style="color: #aa0a0a; font-size: 14px; margin-top: 3px;" class="input-error" id="password-error"></span>
             </div>
 
-            <div class="input-group">
+            <div class="inputGroup">
                 <label>Xác nhận mật khẩu</label>
                 <input type="password" placeholder="Nhập lại mật khẩu" name="confirmPassword">
             </div>
 
-            <div class="login-options">
+            <div class="loginOptions">
                 <label>
                     <input type="checkbox" name="accept"> Tôi đồng ý với điều khoản
                 </label>
             </div>
 
-            <button type="submit" class="login-btn" id="signin-btn">Tạo tài khoản</button>
+            <button type="submit" class="loginBtn" id="signin-btn">Tạo tài khoản</button>
 
-            <p class="register-text">
+            <p class="registerText">
                 Đã có tài khoản?
                 <a href="login.php">Đăng nhập</a>
             </p>

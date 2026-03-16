@@ -11,7 +11,7 @@
             $products = $productService->fetchProductWithCondition($cate, $price, $sort, $page);
             // echo json_encode($products);
             foreach ($products as $product => $detail){
-                echo '<div class="product-card">
+                echo '<div class="productCard">
                         <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8">
                         <h4>'.$detail['product_name'].'</h4>
                         <p class="price">'.number_format($detail['price'], 0, ',', '.').'đ</p>

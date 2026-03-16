@@ -17,7 +17,6 @@
 </head>
 <body>
     <?php
-
         echo $product_id;
     ?>
 </body>

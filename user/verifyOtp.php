@@ -53,13 +53,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
 <?php echo $layout->getHeader(); ?>
 
-    <div class="login-container">
+    <div class="loginContainer">
 
-        <div class="login-card">
+        <div class="loginCard">
 
             <h2>Xác thực OTP</h2>
             <form method="POST">
-                <div class="input-group" style="gap: 10px;">
+                <div class="inputGroup" style="gap: 10px;">
                     <label>Vui lòng nhập mã OTP đã gửi vào email của bạn</label>
                     <input 
                     type="text"
@@ -67,7 +67,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     placeholder="Nhập mã OTP"
                     maxlength="6"
                     >
-                    <button class="login-btn">
+                    <button class="loginBtn">
                         Xác nhận
                     </button>
                 </div>
