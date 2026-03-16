@@ -48,38 +48,44 @@ class ProductService
     }
 
     public function fetchProductWithCondition($cate, $price, $sort, $page){
-        $sql = "SELECT product_id, product_name, price FROM PRODUCT P JOIN CATEGORIES C ON P.CATEGORY_ID = C.CATEGORY_ID";
+        $sql = "SELECT product_id, product_name, price FROM PRODUCT P JOIN CATEGORIES C ON P.CATEGORY_ID = C.CATEGORY_ID ";
+        $pageSql = "SELECT COUNT(*) as total FROM PRODUCT P JOIN CATEGORIES C ON P.CATEGORY_ID = C.CATEGORY_ID ";
+        $condition = "";
         if ($cate) {
-            $sql .= " WHERE category_name = '".$cate."'";
+            $condition .= " WHERE category_name = '".$cate."' ";
         }
         if($price){
-            if(strpos($sql, "WHERE") !== false){
-                $sql .= " AND ";
+            if(strpos($condition, "WHERE") !== false){
+                $condition .= " AND ";
             }else{
-                $sql .= " WHERE ";
+                $condition .= " WHERE ";
             }
-            if($price === "5"){
-                $sql .= " price < 5000000";
-            }else if($price === "10"){
-                $sql .= " price >= 5000000 AND price < 10000000";
-            }else if($price === "20"){
-                $sql .= " price >= 10000000 AND price < 20000000";
-            }else if($price === "more"){
-                $sql .= " price >= 20000000";
+            switch($price){
+                case "5":
+                    $condition .= " price < 5000000 ";
+                    break;
+                case "10":
+                    $condition .= " price >= 5000000 AND price < 10000000 ";
+                    break;
+                case "20":
+                    $condition .= " price >= 10000000 AND price < 20000000 ";
+                    break;
+                default:
+                    $condition .= " price >= 20000000 ";
             }
         }
         if ($sort){
             if ($sort == "up"){
-                $sql .= " ORDER BY price ASC";
+                $condition .= " ORDER BY price ASC ";
             }else if ($sort == "down"){
-                $sql .= " ORDER BY price DESC";
+                $condition .= " ORDER BY price DESC ";
             }
         }
         $offset = ($page - 1) * 12;
-        $sql .= " LIMIT 12 OFFSET ".$offset;
+        $sql .= $condition . " LIMIT 12 OFFSET ".$offset;
         $stmt = $this->conn->prepare($sql);
         if(!$stmt){
-            die("SQL Error: " . $this->conn->error);
+            die("SQL Error: " . $this->conn->error.$sql);
         }
         $stmt->execute();
         $result = $stmt->get_result();
@@ -87,7 +93,16 @@ class ProductService
         while ($row = $result->fetch_assoc()){
             $products[] = $row;
         }
-        return $products;
+
+        $this->conn;
+        $stmt = $this->conn->prepare($pageSql . $condition);
+        if(!$stmt){
+            die("SQL Error: " . $this->conn->error);
+        }
+        $stmt->execute();
+        $pageResult = $stmt->get_result();
+        $total_pages = ceil($pageResult->fetch_assoc()['total'] / 12);
+        return ["products" => $products, "total_pages" => $total_pages];
     }
 }
 ?>

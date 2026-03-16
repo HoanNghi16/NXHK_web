@@ -117,3 +117,53 @@
 .productCard button:hover{
     background:#333;
 }
+
+.paginationBox{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin: 30px 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.paginationBox button{
+    padding: 8px 16px;
+    border: none;
+    background: linear-gradient(135deg,#6a5cff,#4a8dff);
+    color: white;
+    font-weight: 500;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.paginationBox button:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.paginationBox button:active{
+    transform: scale(0.95);
+}
+
+#pageInput{
+    width: 30px;
+    padding: 6px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+    font-size: 14px;
+}
+
+#pageInput:focus{
+    border-color: #6a5cff;
+    box-shadow: 0 0 4px rgba(106,92,255,0.4);
+}
+
+.paginationBox p{
+    margin: 0;
+    font-weight: 500;
+    color: white;
+}

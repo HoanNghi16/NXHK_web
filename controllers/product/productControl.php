@@ -8,8 +8,9 @@
             if (!$price) $price=null;
             if (!$sort) $sort=null;
             
-            $products = $productService->fetchProductWithCondition($cate, $price, $sort, $page);
-            // echo json_encode($products);
+            $result = $productService->fetchProductWithCondition($cate, $price, $sort, $page);
+            $products = $result['products'];
+            $total_pages = $result['total_pages'];
             foreach ($products as $product => $detail){
                 echo '<div class="productCard">
                         <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8">
@@ -18,6 +19,7 @@
                         <button>Mua ngay</button>
                     </div>';
             }
+            return $total_pages;
         }
     }
 ?>
