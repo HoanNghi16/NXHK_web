@@ -15,7 +15,7 @@
                         <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8">
                         <h4>'.$detail['product_name'].'</h4>
                         <p class="price">'.number_format($detail['price'], 0, ',', '.').'đ</p>
-                        <button>Mua ngay</button>
+                        <a href="/NXHK_web/checkout.php?id='.$detail['product_id'].'"><button>Mua ngay</button></a>
                     </div>';
             }
         }

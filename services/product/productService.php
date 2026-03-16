@@ -89,5 +89,20 @@ class ProductService
         }
         return $products;
     }
+
+    public function getProductById($id) {
+        $sql = "SELECT product_id, product_name, price FROM product WHERE product_id = ?";
+        $stmt = $this->conn->prepare($sql);
+        
+        if ($stmt) {
+            $stmt->bind_param("i", $id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $product = $result->fetch_assoc();
+            $stmt->close();
+            return $product;
+        }
+        return null;
+    }
 }
 ?>
