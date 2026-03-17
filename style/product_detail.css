@@ -1,42 +1,135 @@
 * {
   margin: 0 auto;
   padding: 0;
+  box-sizing: border-box;
+
 }
 .ProductNav {
   width: 100%;
   height: 40px;
-  background-color: lightsalmon;
+  line-height: 40px;
+  padding-left: 50px;
+}
+.ProductNav a,
+span {
+  text-decoration: none;
+  font-style: italic;
+  font-family: "Roboto Slab", serif;
+  font-size: 17px;
+  color: rgb(116, 114, 114);
+  font-weight: 800;
+  margin-left: 5px;
+}
+.ProductNav a:hover {
+  color: rgb(23, 76, 156);
+  font-size:20px;
 }
 .PDetailContainer {
-  border: 1px solid green;
   width: 100%;
-  padding: 20px;
+  padding: 25px;
+  padding-left: 60px;
+  padding-right: 60px;
+
 }
 .ProductImage {
   width: 45%;
   height: 500px;
-  border-right: 1px solid black;
-  background-color: antiquewhite;
   float: left;
+  border-radius: 15px;
+  border: solid 1px #d3d1d1;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
 }
 .ProductImage img {
   max-width: 100%;
   max-height: 100%;
   aspect-ratio: 1/1;
   object-fit: cover;
-  margin-left: 80px;
+  margin-left: 60px;
   padding: 10px;
 }
 .ProductContent {
   width: 55%;
-  height: 500px;
+  height: 555px;
   float: left;
-  background-color: pink;
 }
+
+.product-name {
+  text-align: left;
+  margin-left: 60px;
+  font-family: "Roboto Slab", serif;
+}
+.product-price {
+  text-align: left;
+  margin-left: 80px;
+  font-family: "Roboto Slab", serif;
+  font-weight: bold;
+  font-size: 24px;
+  margin-top: 15px;
+  color: rgb(175, 35, 35);
+}
+.product-button {
+  margin-top: 300px;
+  text-align: center;
+}
+#btn-add-to-cart,
+#btn-buy-now {
+  padding: 12px;
+  color: white;
+  border-radius: 6px;
+  font-size: 22px;
+}
+#btn-add-to-cart {
+  background-color: #fdfdfd;
+  color: #d33227;
+  border: solid 1px #d33227;
+  margin-right: 15px;
+}
+#btn-add-to-cart:hover {
+  background-color: #db741f;
+  border: #c26316; solid 1px;
+  color: #fdfdfd;
+  font-weight: bold;
+}
+#btn-buy-now {
+  background-color: #d33227;
+  border: solid 1px #e27272;
+}
+#btn-buy-now:hover {
+  background-color: #410606;
+  border: solid 1px #740b0b;
+  color: #f4f1f0;
+  font-weight: bold;
+}
+
+
 .ProductDescription {
   width: 100%;
-  height: 500px;
-  border-top: 1px solid black;
-  background-color: lightskyblue;
   clear: both;
+  margin-top: 50px;
+
+}
+.specs-table {
+    width: 1100px;
+    border-collapse: collapse;
+    margin-top: 15px;
+    
+}
+
+.specs-table tr:nth-child(even) {
+    background: #e5e6e7;
+}
+
+.specs-table td {
+    padding: 10px;
+    border: 1px solid #0a0a0a;
+}
+
+.spec-name {
+    font-weight: 600;
+    width: 40%;
+    background: #b9bbbc;
+}
+
+.spec-value {
+    width: 60%;
 }
