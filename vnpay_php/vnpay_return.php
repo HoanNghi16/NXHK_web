@@ -1,111 +1,141 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>VNPAY RESPONSE</title>
-        <!-- Bootstrap core CSS -->
-        <link href="assets/bootstrap.min.css" rel="stylesheet""")/>>
-        <!-- Custom styles for this template -->
-        <link href="assets/jumbotron-narrow.css" rel="stylesheet">         
-        <script src="assets/jquery-1.11.3.min.js"></script>
-    </head>
-    <body>
-        <?php
-        require_once("./config.php");
-        $vnp_SecureHash = $_GET['vnp_SecureHash'];
-        $inputData = array();
-        foreach ($_GET as $key => $value) {
-            if (substr($key, 0, 4) == "vnp_") {
-                $inputData[$key] = $value;
-            }
-        }
-        
-        unset($inputData['vnp_SecureHash']);
-        ksort($inputData);
-        $i = 0;
-        $hashData = "";
-        foreach ($inputData as $key => $value) {
-            if ($i == 1) {
-                $hashData = $hashData . '&' . urlencode($key) . "=" . urlencode($value);
-            } else {
-                $hashData = $hashData . urlencode($key) . "=" . urlencode($value);
-                $i = 1;
-            }
-        }
+<?php
+date_default_timezone_set('Asia/Ho_Chi_Minh');
 
-        $secureHash = hash_hmac('sha512', $hashData, $vnp_HashSecret);
-        
-        // Biến kiểm tra thành công để dùng cho Script chuyển hướng ở dưới
-        $isSuccess = ($secureHash == $vnp_SecureHash && $_GET['vnp_ResponseCode'] == '00');
-        ?>
-        
-        <!-- Hiển thị kết quả cho người dùng -->
-        <div class="container">
-            <div class="header clearfix">
-                <h3 class="text-muted">KẾT QUẢ THANH TOÁN VNPAY</h3>
-            </div>
-            <div class="table-responsive">
-                <div class="form-group">
-                    <label>Mã đơn hàng:</label>
-                    <label><?php echo $_GET['vnp_TxnRef'] ?></label>
-                </div>    
-                <div class="form-group">
-                    <label>Số tiền:</label>
-                    <label><?php echo number_format($_GET['vnp_Amount']/100, 0, ',', '.') ?> VNĐ</label>
-                </div>  
-                <div class="form-group">
-                    <label>Nội dung thanh toán:</label>
-                    <label><?php echo $_GET['vnp_OrderInfo'] ?></label>
-                </div> 
-                <div class="form-group">
-                    <label>Mã phản hồi (vnp_ResponseCode):</label>
-                    <label><?php echo $_GET['vnp_ResponseCode'] ?></label>
-                </div> 
-                <div class="form-group">
-                    <label>Mã GD Tại VNPAY:</label>
-                    <label><?php echo $_GET['vnp_TransactionNo'] ?></label>
-                </div> 
-                <div class="form-group">
-                    <label>Mã Ngân hàng:</label>
-                    <label><?php echo $_GET['vnp_BankCode'] ?></label>
-                </div> 
-                <div class="form-group">
-                    <label>Thời gian thanh toán:</label>
-                    <label><?php echo $_GET['vnp_PayDate'] ?></label>
-                </div> 
-                <div class="form-group">
-                    <label>Kết quả:</label>
-                    <label>
-                        <?php
-                        if ($secureHash == $vnp_SecureHash) {
-                            if ($_GET['vnp_ResponseCode'] == '00') {
-                                echo "<span style='color:blue; font-weight:bold;'>Giao dịch Thành công</span>";
-                                echo "<p><small>Hệ thống sẽ tự động chuyển hướng sau 5 giây...</small></p>";
-                            } else {
-                                echo "<span style='color:red; font-weight:bold;'>Giao dịch Không thành công</span>";
-                            }
-                        } else {
-                            echo "<span style='color:red; font-weight:bold;'>Chữ ký không hợp lệ (Sai cấu hình bảo mật)</span>";
-                        }
-                        ?>
-                    </label>
-                </div> 
-            </div>
-            <footer class="footer" style="margin-top: 20px;">
-                   <p>&copy; VNPAY <?php echo date('Y')?></p>
-            </footer>
+require_once __DIR__ . "/../config/database.php";
+require_once __DIR__ . "/../layout/layout.php";
+require_once __DIR__ . "/config.php";
+
+$layout = new Layout();
+
+$vnp_SecureHash = $_GET['vnp_SecureHash'] ?? '';
+
+$inputData = array();
+foreach ($_GET as $key => $value) {
+    if (substr($key, 0, 4) == "vnp_") {
+        $inputData[$key] = $value;
+    }
+}
+
+unset($inputData['vnp_SecureHash']);
+ksort($inputData);
+
+$hashData = "";
+$i = 0;
+foreach ($inputData as $key => $value) {
+    if ($i == 1) {
+        $hashData .= '&' . urlencode($key) . "=" . urlencode($value);
+    } else {
+        $hashData .= urlencode($key) . "=" . urlencode($value);
+        $i = 1;
+    }
+}
+
+$secureHash = hash_hmac('sha512', $hashData, $vnp_HashSecret);
+
+$isSuccess = ($secureHash == $vnp_SecureHash && ($_GET['vnp_ResponseCode'] ?? '') == '00');
+
+$order_code = $_GET['vnp_TxnRef'] ?? '';
+$amount = isset($_GET['vnp_Amount']) ? $_GET['vnp_Amount'] / 100 : 0;
+$orderInfo = $_GET['vnp_OrderInfo'] ?? '';
+$responseCode = $_GET['vnp_ResponseCode'] ?? '';
+$transactionNo = $_GET['vnp_TransactionNo'] ?? '';
+$bankCode = $_GET['vnp_BankCode'] ?? '';
+$payDateRaw = $_GET['vnp_PayDate'] ?? '';
+
+$formattedDate = "";
+if ($payDateRaw) {
+    $formattedDate = date("d/m/Y H:i:s", strtotime($payDateRaw));
+}
+
+if ($isSuccess && $order_code) {
+    $stmt = $GLOBALS['conn']->prepare("
+        UPDATE orders SET status = 2 WHERE order_code = ?
+    ");
+    $stmt->bind_param("s", $order_code);
+    $stmt->execute();
+}
+
+if ($isSuccess) {
+    $order_code = $_GET['vnp_TxnRef'];
+    $amount = $_GET['vnp_Amount'] / 100;
+
+    $sql = "UPDATE orders 
+            SET status = 1, 
+                amount = ?, 
+                payment_method = 'vnpay' 
+            WHERE order_code = ?";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ds", $amount, $order_code);
+    $stmt->execute();
+}
+?>
+
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Kết quả thanh toán VNPay</title>
+
+    <link href="assets/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <?php echo $layout->getHeader(); ?>
+
+    <div class="container" style="margin-top: 50px;">
+        <h3>KẾT QUẢ THANH TOÁN VNPAY</h3>
+
+        <div class="form-group">
+            <strong>Mã đơn hàng:</strong> <?php echo htmlspecialchars($order_code); ?>
         </div>
 
-        <script>
+        <div class="form-group">
+            <strong>Số tiền:</strong> <?php echo number_format($amount, 0, ',', '.'); ?> VNĐ
+        </div>
+
+        <div class="form-group">
+            <strong>Nội dung:</strong> <?php echo htmlspecialchars($orderInfo); ?>
+        </div>
+
+        <div class="form-group">
+            <strong>Mã phản hồi:</strong> <?php echo $responseCode; ?>
+        </div>
+
+        <div class="form-group">
+            <strong>Mã giao dịch:</strong> <?php echo $transactionNo; ?>
+        </div>
+
+        <div class="form-group">
+            <strong>Ngân hàng:</strong> <?php echo $bankCode; ?>
+        </div>
+
+        <div class="form-group">
+            <strong>Thời gian:</strong> <?php echo $formattedDate; ?>
+        </div>
+
+        <div class="form-group">
+            <strong>Kết quả:</strong>
             <?php if ($isSuccess): ?>
-                setTimeout(function () {
-                    window.location.href = '../order_status.php?order_id=<?php echo $_GET['vnp_TxnRef']; ?>';
-                }, 5000)
+            <span style="color:green; font-weight:bold;">Thanh toán thành công</span>
             <?php else: ?>
-                console.log("Thanh toán thất bại, không chuyển trang.");
+            <span style="color:red; font-weight:bold;">Thanh toán thất bại</span>
             <?php endif; ?>
-        </script>
-    </body>
+        </div>
+    </div>
+
+    <script>
+    <?php if ($isSuccess): ?>
+    setTimeout(function() {
+        window.location.href = "../order_status.php?order_id=<?php echo $order_code; ?>&method=vnpay";
+    }, 3000);
+    <?php endif; ?>
+    </script>
+
+    <?php echo $layout->getFooter(); ?>
+
+</body>
+
 </html>

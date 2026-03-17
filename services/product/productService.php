@@ -47,39 +47,77 @@ class ProductService
         return false;
     }
 
+    public function getProductByID($id)
+    {
+        $sql = "SELECT * FROM product p
+                JOIN categories c ON p.category_id = c.category_id
+                WHERE p.product_id = ?";
+
+        $stmt = $this->conn->prepare($sql);
+
+        if (!$stmt) 
+        {
+            return null; // lỗi prepare
+        }
+
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        if ($result && $result->num_rows > 0) {
+            $product = $result->fetch_assoc();
+
+            // kiểm tra tồn tại trước khi decode
+            if (isset($product['specifications'])) {
+                $product['specs'] = json_decode($product['specifications'], true);
+            }
+
+            return $product;
+        }
+
+        return null; // không tìm thấy
+    }
+
     public function fetchProductWithCondition($cate, $price, $sort, $page){
-        $sql = "SELECT product_id, product_name, price FROM PRODUCT P JOIN CATEGORIES C ON P.CATEGORY_ID = C.CATEGORY_ID";
+        $sql = "SELECT product_id, product_name, price FROM PRODUCT P JOIN CATEGORIES C ON P.CATEGORY_ID = C.CATEGORY_ID ";
+        $pageSql = "SELECT COUNT(*) as total FROM PRODUCT P JOIN CATEGORIES C ON P.CATEGORY_ID = C.CATEGORY_ID ";
+        $condition = "";
         if ($cate) {
-            $sql .= " WHERE category_name = '".$cate."'";
+            $condition .= " WHERE category_name = '".$cate."' ";
         }
         if($price){
-            if(strpos($sql, "WHERE") !== false){
-                $sql .= " AND ";
+            if(strpos($condition, "WHERE") !== false){
+                $condition .= " AND ";
             }else{
-                $sql .= " WHERE ";
+                $condition .= " WHERE ";
             }
-            if($price === "5"){
-                $sql .= " price < 5000000";
-            }else if($price === "10"){
-                $sql .= " price >= 5000000 AND price < 10000000";
-            }else if($price === "20"){
-                $sql .= " price >= 10000000 AND price < 20000000";
-            }else if($price === "more"){
-                $sql .= " price >= 20000000";
+            switch($price){
+                case "5":
+                    $condition .= " price < 5000000 ";
+                    break;
+                case "10":
+                    $condition .= " price >= 5000000 AND price < 10000000 ";
+                    break;
+                case "20":
+                    $condition .= " price >= 10000000 AND price < 20000000 ";
+                    break;
+                default:
+                    $condition .= " price >= 20000000 ";
             }
         }
         if ($sort){
             if ($sort == "up"){
-                $sql .= " ORDER BY price ASC";
+                $condition .= " ORDER BY price ASC ";
             }else if ($sort == "down"){
-                $sql .= " ORDER BY price DESC";
+                $condition .= " ORDER BY price DESC ";
             }
         }
-        $offset = ($page - 1) * 10;
-        $sql .= " LIMIT 10 OFFSET ".$offset;
+        $offset = ($page - 1) * 12;
+        $sql .= $condition . " LIMIT 12 OFFSET ".$offset;
         $stmt = $this->conn->prepare($sql);
         if(!$stmt){
-            die("SQL Error: " . $this->conn->error);
+            die("SQL Error: " . $this->conn->error.$sql);
         }
         $stmt->execute();
         $result = $stmt->get_result();
@@ -87,22 +125,18 @@ class ProductService
         while ($row = $result->fetch_assoc()){
             $products[] = $row;
         }
-        return $products;
+
+        $this->conn;
+        $stmt = $this->conn->prepare($pageSql . $condition);
+        if(!$stmt){
+            die("SQL Error: " . $this->conn->error);
+        }
+        $stmt->execute();
+        $pageResult = $stmt->get_result();
+        $total_pages = ceil($pageResult->fetch_assoc()['total'] / 12);
+        return ["products" => $products, "total_pages" => $total_pages];
     }
 
-    public function getProductById($id) {
-        $sql = "SELECT product_id, product_name, price FROM product WHERE product_id = ?";
-        $stmt = $this->conn->prepare($sql);
-        
-        if ($stmt) {
-            $stmt->bind_param("i", $id);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            $product = $result->fetch_assoc();
-            $stmt->close();
-            return $product;
-        }
-        return null;
-    }
+
 }
 ?>

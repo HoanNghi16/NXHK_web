@@ -2,7 +2,7 @@
     session_start();
     include("./layout/layout.php");
     $layout = new Layout();
-    
+
 ?>
 
 <!DOCTYPE html>
@@ -21,7 +21,7 @@
 
 <?php echo $layout->getHeader(); ?>
 
-<div class="container">
+<div class="introContainer">
 
     <section class="intro-hero">
 

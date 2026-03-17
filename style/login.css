@@ -16,27 +16,17 @@
     "Helvetica Neue",
     sans-serif;
 }
-<<<<<<< HEAD
 
-.login-container{
-    background-image: linear-gradient(135deg, #331d4e, #0f2c6d);
-    height: 100dvh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:100px;
-=======
-.login-container {
+.loginContainer {
   background-image: linear-gradient(135deg, #331d4e, #0f2c6d);
   height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 100px;
->>>>>>> origin/pink
 }
 
-.login-card {
+.loginCard {
   background: #020617;
   color: white;
   padding: 40px;
@@ -45,36 +35,30 @@
   border: 1px solid #1e293b;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
 }
-<<<<<<< HEAD
-.login-card h2{
-    text-align:center;
-    margin-bottom:25px;
-=======
 
-.login-card h2 {
+.loginCard h2 {
   text-align: center;
   margin-bottom: 25px;
->>>>>>> origin/pink
 }
 
-.login-form {
+.loginForm {
   display: flex;
   flex-direction: column;
 }
 
-.input-group {
+.inputGroup {
   margin-bottom: 18px;
   display: flex;
   flex-direction: column;
 }
 
-.input-group label {
+.inputGroup label {
   font-size: 14px;
   margin-bottom: 6px;
   color: #cbd5f5;
 }
 
-.input-group input {
+.inputGroup input {
   padding: 10px;
   border-radius: 6px;
   border: 1px solid #334155;
@@ -83,31 +67,22 @@
   outline: none;
 }
 
-.input-group input:focus {
+.inputGroup input:focus {
   border-color: #38bdf8;
 }
-<<<<<<< HEAD
-.login-options{
-    display:flex;
-    justify-content:space-between;
-    font-size:13px;
-    margin-bottom:20px;
-=======
-
-.login-options {
+.loginOptions {
   display: flex;
   justify-content: space-between;
   font-size: 13px;
   margin-bottom: 20px;
->>>>>>> origin/pink
 }
 
-.login-options a {
+.loginOptions a {
   color: #38bdf8;
   text-decoration: none;
 }
 
-.login-btn {
+.loginBtn {
   padding: 12px;
   border: none;
   background: #2563eb;
@@ -117,45 +92,35 @@
   font-size: 15px;
   transition: 0.25s;
 }
-<<<<<<< HEAD
-.login-form .login-btn:disabled{
-    background:#b5b5b5;
-    cursor:not-allowed;
+.loginForm .loginBtn:disabled {
+  background: #b5b5b5;
+  cursor: not-allowed;
 }
-.login-btn:hover{
-    background:#1d4ed8;
-=======
-
-.login-btn:hover {
+.loginBtn:hover {
   background: #1d4ed8;
->>>>>>> origin/pink
 }
 
-.register-text {
+.registerText {
   text-align: center;
   margin-top: 18px;
   font-size: 14px;
 }
 
-.register-text a {
+.registerText a {
   color: #38bdf8;
   text-decoration: none;
 }
-/* checkbox đẹp hơn */
 
-<<<<<<< HEAD
-.login-options input[type="checkbox"]{
-    margin-right:6px;
-    cursor:pointer;
-}
-
-.input-error{
-    font-size:13px;
-    margin-top:3px;
-}
-=======
-.login-options input[type="checkbox"] {
+.loginOptions input[type="checkbox"] {
   margin-right: 6px;
   cursor: pointer;
 }
->>>>>>> origin/pink
+
+.inputError {
+  font-size: 13px;
+  margin-top: 3px;
+}
+.loginEptions input[type="checkbox"] {
+  margin-right: 6px;
+  cursor: pointer;
+}
