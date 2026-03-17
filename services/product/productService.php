@@ -134,5 +134,7 @@ class ProductService
         $total_pages = ceil($pageResult->fetch_assoc()['total'] / 12);
         return ["products" => $products, "total_pages" => $total_pages];
     }
+
+
 }
 ?>

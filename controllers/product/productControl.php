@@ -16,7 +16,10 @@
                         <img src="'.$detail['path'].'">
                         <h4>'.$detail['product_name'].'</h4>
                         <p class="price">'.number_format($detail['price'], 0, ',', '.').'đ</p>
-                        <button>Mua ngay</button>
+                        <form action="../checkout.php" method="GET" >
+                            <input type="hidden" name="id" value="'.$detail['product_id'].'">
+                            <button>Mua ngay</button>
+                        </form>     
                     </a>';
             }
             return $total_pages;
