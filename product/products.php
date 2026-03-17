@@ -4,16 +4,15 @@
     include("../controllers/product/productControl.php");
     $productControl = new ProductControl();
     $layout = new Layout();
-    $title = $_GET['cate'] ?? "Tất cả sản phẩm";
-    $title = ucfirst($title);
-    
+    $title = isset($_GET['cate'] ) && $_GET['cate'] !='' ? $_GET['cate'] : 'Tất cả sản phẩm';
+    $title = ucfirst($title);  
 ?>
 <!DOCTYPE html>
     <html lang="en">
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Document</title>
+            <title>Sản phẩm</title>
             <link rel="stylesheet" href="../style/products.css">
             <script src="../js/productUIhandler.js"></script>
         </head>

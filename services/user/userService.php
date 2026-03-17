@@ -7,19 +7,25 @@
             $this->conn = $conn;
         }
 
-        public function createOtp($email, $password, $name){
+        public function createOtp($email, $password, $name, $action){
 
             $otp = rand(100000,999999);
 
             $_SESSION['otp'] = $otp;
-            $_SESSION['register_email'] = $email;
-            $_SESSION['register_password'] = $password;
-            $_SESSION['register_name'] = $name;
-
+            if ($action === "register"){
+                $_SESSION['register_email'] = $email;
+                $_SESSION['register_password'] = $password;
+                $_SESSION['register_name'] = $name;
+            }else if ($action === "forgetPassword"){
+                $_SESSION['forget_email'] = $email;
+                $_SESSION['forget_password'] = $password;
+            }else{
+                return;
+            }
             return $otp;
         }
 
-        public function verifyOtp($inputOtp){
+        public function verifyOtp($inputOtp, $action){
 
             if(!isset($_SESSION['otp'])){
                 return "OTP đã hết hạn";
@@ -29,28 +35,35 @@
                 return "OTP không đúng";
             }
 
-            $email = $_SESSION['register_email'];
-            $password = $_SESSION['register_password'];
-            $name = $_SESSION['register_name'];
+            if ($action = 'register'){
+                $email = $_SESSION['register_email'];
+                $password = $_SESSION['register_password'];
+                $name = $_SESSION['register_name'];
 
-            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-            $id = uniqid(null,true);
-            $role = "customer";
+                $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+                $id = uniqid(null,true);
+                $role = "customer";
 
-            $stmt = $this->conn->prepare(
-                "INSERT INTO user (email,password,name,id,role) VALUES (?,?,?,?,?)"
-            );
+                $stmt = $this->conn->prepare(
+                    "INSERT INTO user (email,password,name,id,role) VALUES (?,?,?,?,?)"
+                );
 
-            $stmt->bind_param("sssss",$email,$hashedPassword,$name,$id,$role);
+                $stmt->bind_param("sssss",$email,$hashedPassword,$name,$id,$role);
 
-            if($stmt->execute()){
+                if($stmt->execute()){
 
-                unset($_SESSION['otp']);
+                    unset($_SESSION['otp']);
 
-                return true;
+                    return true;
+                }
+
+                return "Tạo tài khoản thất bại";
+            }else if ($action === 'forgetPassword'){
+                // $email = $_SESSION['forget_email'];
+                // $password = $_SESSION['forget_password'];
+                // $sql 
             }
 
-            return "Tạo tài khoản thất bại";
         }
 
         public function validationRegister($email, $password, $name, $confirmPassword){

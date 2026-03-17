@@ -6,7 +6,6 @@
     $userControl = new userControl();
     if(isset($_SESSION['user_id'])){
         header("Location: ../home.php");
-        $toast->showToast("Bạn đã đăng nhập", "null", 3000);
         exit();
     }
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
