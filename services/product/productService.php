@@ -47,6 +47,38 @@ class ProductService
         return false;
     }
 
+    public function getProductByID($id)
+    {
+        $sql = "SELECT * FROM product p
+                JOIN categories c ON p.category_id = c.category_id
+                WHERE p.product_id = ?";
+
+        $stmt = $this->conn->prepare($sql);
+
+        if (!$stmt) 
+        {
+            return null; // lỗi prepare
+        }
+
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        if ($result && $result->num_rows > 0) {
+            $product = $result->fetch_assoc();
+
+            // kiểm tra tồn tại trước khi decode
+            if (isset($product['specifications'])) {
+                $product['specs'] = json_decode($product['specifications'], true);
+            }
+
+            return $product;
+        }
+
+        return null; // không tìm thấy
+    }
+
     public function fetchProductWithCondition($cate, $price, $sort, $page){
         $sql = "SELECT product_id, product_name, price FROM PRODUCT P JOIN CATEGORIES C ON P.CATEGORY_ID = C.CATEGORY_ID ";
         $pageSql = "SELECT COUNT(*) as total FROM PRODUCT P JOIN CATEGORIES C ON P.CATEGORY_ID = C.CATEGORY_ID ";
