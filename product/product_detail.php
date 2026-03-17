@@ -12,7 +12,9 @@
         exit;
     }
     $p = new ProductService($conn);
-    $product = $p->getProductByID($id);
+    $result = $p->getProductByID($id);
+    $product = $result['product'];
+    $images = $result['images'];
     if (!$product) 
     {
         echo "Sản phẩm không tồn tại";
@@ -28,6 +30,7 @@
     <link rel="stylesheet" href="../style/product_detail.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <title>Document</title>
+    <script src="../js/productDetailHandler.js"></script>
 </head>
 <body>
     <?php
@@ -46,9 +49,16 @@
     <hr>
     <div class="PDetailContainer">
         
-        <div style="margin-bottom: 40px;">
+        <div style="margin-bottom: 40px; display: flex">
             <div class="ProductImage">
-                <img src="https://baotinmobile.vn/uploads/2025/09/iphone-17.jpg" alt="">
+                <img src="<?php echo $images[0]['path']?>" alt="" id="onShow">
+                <div class="previewList">
+                    <?php
+                        foreach($images as $image){
+                            echo '<img class="preview" src="'.$image['path'].'" onmouseenter="changePreview(this)"></img>';
+                        }
+                    ?>
+                </div>
             </div>
             <div class="ProductContent">
                 <h1 class="product-name">

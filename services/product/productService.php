@@ -24,8 +24,6 @@ class ProductService
         }
         $checkStmt->close();
 
-
-        // 1. Mã hóa mảng specs thành chuỗi JSON để lưu vào database
         $jsonSpecs=json_encode($data['specs'], JSON_UNESCAPED_UNICODE);
         $sql="INSERT INTO product (category_id, product_name, price, description, specifications) VALUES (?, ?, ?, ?,?)";
         $stmt=$this->conn->prepare($sql);
@@ -72,8 +70,18 @@ class ProductService
             if (isset($product['specifications'])) {
                 $product['specs'] = json_decode($product['specifications'], true);
             }
-
-            return $product;
+            $stmt->prepare("SELECT * FROM PRODUCT_IMAGES WHERE PRODUCT_ID = ?");
+            $stmt->bind_param('s', $product['product_id']);
+            if($stmt->execute()){
+                $result = $stmt->get_result();
+                $images = [];
+                while ($row = $result->fetch_assoc()){
+                    $images[] = $row;
+                }
+            }else{
+                $images = "Không có ảnh nào để hiển thị";
+            }
+            return ['product'=> $product, 'images'=>$images];
         }
 
         return null; // không tìm thấy

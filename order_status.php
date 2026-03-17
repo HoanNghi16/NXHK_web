@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once __DIR__ . "/config/database.php";
 require_once __DIR__ . "/layout/layout.php";
 
@@ -167,7 +168,8 @@ if ($method !== 'cod' && isset($_GET['vnp_ResponseCode'])) {
             </div>
 
             <div class="step <?php echo ($status >= 3) ? 'active' : ''; ?>">
-                <div class="circle"></div>
+                <div class="circle">
+                </div>
                 <div class="label">Đang giao hàng</div>
             </div>
 
