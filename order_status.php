@@ -9,7 +9,7 @@ $order_id = $_GET['order_id'] ?? ($_GET['vnp_TxnRef'] ?? null);
 // Giả sử bạn có bảng 'orders' trong DB với cột 'status' (0: Chờ thanh toán, 1: Đã thanh toán, 2: Đang giao, 3: Thành công)
 $order = null;
 if ($order_id) {
-    $stmt = $GLOBALS['conn']->prepare("SELECT * FROM orders WHERE order_code = ?");
+    $stmt = $GLOBALS['conn']->prepare("SELECT * FROM orders WHERE order_id = ?");
     $stmt->bind_param("s", $order_id);
     $stmt->execute();
     $order = $stmt->get_result()->fetch_assoc();
