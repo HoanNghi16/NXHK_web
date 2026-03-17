@@ -80,18 +80,16 @@ class ProductService
     }
 
     public function fetchProductWithCondition($cate, $price, $sort, $page){
-        $sql = "SELECT product_id, product_name, price FROM PRODUCT P JOIN CATEGORIES C ON P.CATEGORY_ID = C.CATEGORY_ID ";
-        $pageSql = "SELECT COUNT(*) as total FROM PRODUCT P JOIN CATEGORIES C ON P.CATEGORY_ID = C.CATEGORY_ID ";
-        $condition = "";
+        $sql = "SELECT P.product_id, product_name, price, path FROM PRODUCT P 
+        JOIN CATEGORIES C ON P.CATEGORY_ID = C.CATEGORY_ID 
+        JOIN PRODUCT_IMAGES P_I ON P.PRODUCT_ID = P_I.PRODUCT_ID";
+        $pageSql = "SELECT COUNT(*) as total FROM PRODUCT P JOIN CATEGORIES C ON P.CATEGORY_ID = C.CATEGORY_ID JOIN PRODUCT_IMAGES P_I ON P.PRODUCT_ID = P_I.PRODUCT_ID ";
+        $condition = " WHERE P_I.IS_THUMBNAIL = 1 ";
         if ($cate) {
-            $condition .= " WHERE category_name = '".$cate."' ";
+            $condition .= " AND category_name = '".$cate."' ";
         }
         if($price){
-            if(strpos($condition, "WHERE") !== false){
-                $condition .= " AND ";
-            }else{
-                $condition .= " WHERE ";
-            }
+            $condition .= " WHERE ";
             switch($price){
                 case "5":
                     $condition .= " price < 5000000 ";

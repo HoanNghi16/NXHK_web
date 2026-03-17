@@ -10,7 +10,7 @@
         public function createOtp($email, $password, $name, $action){
 
             $otp = rand(100000,999999);
-
+            $_SESSION['action'] =  $action;
             $_SESSION['otp'] = $otp;
             if ($action === "register"){
                 $_SESSION['register_email'] = $email;
@@ -18,15 +18,14 @@
                 $_SESSION['register_name'] = $name;
             }else if ($action === "forgetPassword"){
                 $_SESSION['forget_email'] = $email;
-                $_SESSION['forget_password'] = $password;
             }else{
                 return;
             }
             return $otp;
         }
 
-        public function verifyOtp($inputOtp, $action){
-
+        public function verifyOtp($inputOtp){
+            $action = $_SESSION['action'];
             if(!isset($_SESSION['otp'])){
                 return "OTP đã hết hạn";
             }
@@ -35,7 +34,7 @@
                 return "OTP không đúng";
             }
 
-            if ($action = 'register'){
+            if ($action == 'register'){
                 $email = $_SESSION['register_email'];
                 $password = $_SESSION['register_password'];
                 $name = $_SESSION['register_name'];
@@ -51,19 +50,40 @@
                 $stmt->bind_param("sssss",$email,$hashedPassword,$name,$id,$role);
 
                 if($stmt->execute()){
-
                     unset($_SESSION['otp']);
-
                     return true;
                 }
 
                 return "Tạo tài khoản thất bại";
             }else if ($action === 'forgetPassword'){
-                // $email = $_SESSION['forget_email'];
-                // $password = $_SESSION['forget_password'];
-                // $sql 
+                header('Location: ./newPassword.php');
+                return false;
             }
-
+            return false;
+        }
+        public function forgetPassword($email){
+            $stmt = $this->conn->prepare("SELECT EMAIL FROM USER WHERE EMAIL ='".$email."'");
+            if($stmt->execute()){
+                return $stmt->get_result()->fetch_assoc();
+            }
+        }
+        public function newPassword(){
+                $email = $_SESSION['forget_email'];
+                $password = $_SESSION['forget_password'];
+                $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+                $sql = 'UPDATE USER SET PASSWORD = ? WHERE EMAIL = ? ';
+                $stmt = $this->conn->prepare($sql);
+                if (!$stmt) {
+                    die("SQL Error: " . $this->conn->error);
+                }
+                $stmt->bind_param("ss",$hashedPassword, $email );
+                if( $stmt->execute()){
+                    unset($_SESSION['otp']);
+                    unset($_SESSION['forget_password']);
+                    unset($_SESSION['forget_email']);
+                    return true;
+                }
+                return false;
         }
 
         public function validationRegister($email, $password, $name, $confirmPassword){
