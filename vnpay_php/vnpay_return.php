@@ -31,7 +31,6 @@ foreach ($inputData as $key => $value) {
 }
 
 $secureHash = hash_hmac('sha512', $hashData, $vnp_HashSecret);
-
 $isSuccess = ($secureHash == $vnp_SecureHash && ($_GET['vnp_ResponseCode'] ?? '') == '00');
 
 $order_code = $_GET['vnp_TxnRef'] ?? '';
@@ -47,20 +46,12 @@ if ($payDateRaw) {
     $formattedDate = date("d/m/Y H:i:s", strtotime($payDateRaw));
 }
 
-if ($isSuccess && $order_code) {
-    $stmt = $GLOBALS['conn']->prepare("
-        UPDATE orders SET status = 2 WHERE order_code = ?
-    ");
-    $stmt->bind_param("s", $order_code);
-    $stmt->execute();
-}
-
 if ($isSuccess) {
     $order_code = $_GET['vnp_TxnRef'];
     $amount = $_GET['vnp_Amount'] / 100;
 
     $sql = "UPDATE orders 
-            SET status = 1, 
+            SET status = 2, 
                 amount = ?, 
                 payment_method = 'vnpay' 
             WHERE order_code = ?";
@@ -68,7 +59,11 @@ if ($isSuccess) {
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ds", $amount, $order_code);
     $stmt->execute();
+
+    header("Location: ../order_status.php?order_id=$order_code&method=vnpay");
+    exit;
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -123,6 +118,12 @@ if ($isSuccess) {
             <?php else: ?>
             <span style="color:red; font-weight:bold;">Thanh toán thất bại</span>
             <?php endif; ?>
+        </div>
+
+        <div style="margin-top: 30px; margin-bottom: 50px; text-align: center;">
+            <a href="../home.php" style="text-decoration: none; color: #007bff; font-weight: bold;">
+                Tiếp tục mua sắm
+            </a>
         </div>
     </div>
 

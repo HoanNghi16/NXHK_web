@@ -31,7 +31,6 @@ if (!$product) { die("Sản phẩm không tồn tại."); }
         padding: 0 15px;
     }
 
-    /* Chia 2 cột phía trên */
     .checkout-main {
         display: flex;
         gap: 30px;
@@ -165,21 +164,25 @@ if (!$product) { die("Sản phẩm không tồn tại."); }
                 <div class="left-col">
                     <h2>Thông tin nhận hàng</h2>
                     <div class="form-group">
-                        <label>Họ và tên <span style="color: red;">*</span></label>
-                        <input type="text" name="customer_name" required placeholder="Nguyễn Văn A">
+                        <label>Họ và tên</label>
+                        <input type="text" name="customer_name" required placeholder="Nguyễn Văn A" required>
+                        <span style="color: red;">*</span>
                     </div>
                     <div class="form-group">
-                        <label>Email <span style="color: red;">*</span></label>
-                        <input type="email" name="customer_email" required placeholder="name@example.com">
+                        <label>Email</label>
+                        <input type="email" name="customer_email" required placeholder="name@gmail.com" required>
+                        <span style="color: red;">*</span>
                     </div>
                     <div class="form-group">
-                        <label>Số điện thoại <span style="color: red;">*</span></label>
-                        <input type="tel" name="customer_phone" required placeholder="0901234567">
+                        <label>Số điện thoại</label>
+                        <input type="tel" name="customer_phone" required placeholder="0901234567" required>
+                        <span style="color: red;">*</span>
                     </div>
                     <div class="form-group">
-                        <label>Địa chỉ nhận hàng <span style="color: red;">*</span></label>
+                        <label>Địa chỉ nhận hàng</label>
                         <textarea name="customer_address" rows="2" required
                             placeholder="Số nhà, tên đường, phường/xã..."></textarea>
+                        <span style="color: red;">*</span>
                     </div>
                     <div class="form-group">
                         <label>Ghi chú</label>
@@ -216,11 +219,11 @@ if (!$product) { die("Sản phẩm không tồn tại."); }
                     </div>
 
                     <input type="hidden" name="product_id" value="<?php echo $product['product_id']; ?>">
-                    <input type="hidden" name="order_desc" value="Thanh toan: <?php echo $product['product_name']; ?>">
+                    <input type="hidden" name="order_desc" value="<?php echo $product['product_name']; ?>">
                     <input type="hidden" name="amount" id="form-amount" value="<?php echo $product['price']; ?>">
                     <input type="hidden" name="quantity" id="form-qty" value="1">
 
-                    <button type="button" class="btn-pay" onclick="handlePayment()">XÁC NHẬN ĐẶT HÀNG</button>
+                    <button type="submit" id="submitBtn" class="btn-pay">ĐẶT HÀNG</button>
                 </div>
             </div>
 
@@ -256,37 +259,72 @@ if (!$product) { die("Sản phẩm không tồn tại."); }
     </div>
 
     <script>
-    const unitPrice = <?php echo $product['price']; ?>;
+    document.addEventListener("DOMContentLoaded", function() {
 
-    function updateQty(change) {
-        let qty = parseInt(document.getElementById('display-qty').value) + change;
-        if (qty < 1) qty = 1;
+        const unitPrice = <?php echo $product['price']; ?>;
 
-        const total = qty * unitPrice;
-        const totalFormatted = total.toLocaleString('vi-VN') + 'đ';
+        window.updateQty = function(change) {
+            let qty = parseInt(document.getElementById('display-qty').value) + change;
+            if (qty < 1) qty = 1;
 
-        // Cập nhật giao diện
-        document.getElementById('display-qty').value = qty;
-        document.getElementById('total-display').innerText = totalFormatted;
-        document.getElementById('table-qty').innerText = qty;
-        document.getElementById('table-total').innerText = totalFormatted;
+            const total = qty * unitPrice;
+            const totalFormatted = total.toLocaleString('vi-VN') + 'đ';
 
-        // Cập nhật giá trị vào form ẩn
-        document.getElementById('form-qty').value = qty;
-        document.getElementById('form-amount').value = total;
-    }
+            document.getElementById('display-qty').value = qty;
+            document.getElementById('total-display').innerText = totalFormatted;
 
-    function handlePayment() {
-        const method = document.querySelector('input[name="payment_choice"]:checked').value;
+            const tableQty = document.getElementById('table-qty');
+            const tableTotal = document.getElementById('table-total');
+            if (tableQty) tableQty.innerText = qty;
+            if (tableTotal) tableTotal.innerText = totalFormatted;
+
+            document.getElementById('form-qty').value = qty;
+            document.getElementById('form-amount').value = total;
+        }
+
+        const nameInput = document.querySelector('[name="customer_name"]');
+        const emailInput = document.querySelector('[name="customer_email"]');
+        const phoneInput = document.querySelector('[name="customer_phone"]');
+        const addressInput = document.querySelector('[name="customer_address"]');
+        const btn = document.getElementById('submitBtn');
         const form = document.getElementById('checkoutForm');
 
-        if (method === 'cod') {
-            form.action = "create_order.php";
-        } else {
-            form.action = "vnpay_php/vnpay_create_payment.php";
+        function checkForm() {
+            if (
+                nameInput.value.trim() &&
+                emailInput.value.trim() &&
+                phoneInput.value.trim() &&
+                addressInput.value.trim()
+            ) {
+                btn.disabled = false;
+                btn.style.opacity = "1";
+            } else {
+                btn.disabled = true;
+                btn.style.opacity = "0.5";
+            }
         }
-        form.submit();
-    }
+
+        [nameInput, emailInput, phoneInput, addressInput].forEach(input => {
+            input.addEventListener("input", checkForm);
+        });
+
+        form.addEventListener("submit", function(e) {
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                e.preventDefault();
+                return;
+            }
+
+            const method = document.querySelector('input[name="payment_choice"]:checked').value;
+
+            if (method === 'cod') {
+                form.action = "create_order.php";
+            } else {
+                form.action = "vnpay_php/vnpay_create_payment.php";
+            }
+        });
+
+    });
     </script>
 
     <?php echo $layout->getFooter(); ?>

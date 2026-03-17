@@ -8,7 +8,6 @@ $order_id = $_GET['order_id'] ?? ($_GET['vnp_TxnRef'] ?? null);
 $method = $_GET['method'] ?? 'cod';
 date_default_timezone_set('Asia/Ho_Chi_Minh');
 
-$order = null;
 if ($order_id) {
     $stmt = $GLOBALS['conn']->prepare("SELECT * FROM orders WHERE order_code = ?");
     $stmt->bind_param("s", $order_id);
@@ -16,20 +15,39 @@ if ($order_id) {
     $order = $stmt->get_result()->fetch_assoc();
 }
 
-$status = $order['status'] ?? 1;
+if (!$order) {
+    die("Đơn hàng không tồn tại!");
+}   
+
+$status = $order['status'];
 
 $paymentText = "Không xác định";
 if ($order) {
     if ($method === 'cod') {
-        $paymentText = "Thanh toán khi nhận hàng (COD)";
+        $paymentText = "Thanh toán khi nhận hàng";
     } else {
         $paymentText = "VNPay (ATM/Visa/QR)";
     }
 }
-
 $successText = ($method === 'cod') 
     ? "Đặt hàng thành công" 
     : "Thanh toán thành công";
+
+$vnp_ResponseCode = $_GET['vnp_ResponseCode'] ?? null;
+
+
+if ($method !== 'cod' && isset($_GET['vnp_ResponseCode'])) {
+    if ($_GET['vnp_ResponseCode'] !== '00') {
+        $error_msg = "Thanh toán VNPay thất bại (mã lỗi: " . htmlspecialchars($_GET['vnp_ResponseCode']) . "). Đơn hàng của bạn có thể chưa được xác nhận.";
+        // Có thể update status = 0 (thất bại) ở đây nếu cần
+    } else {
+        // Thành công → update status = 1 (đã thanh toán) nếu chưa
+        $updateStmt = $GLOBALS['conn']->prepare("UPDATE orders SET status = 2 WHERE order_code = ? AND status = 1");
+        $updateStmt->bind_param("s", $order_id);
+        $updateStmt->execute();
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -37,7 +55,7 @@ $successText = ($method === 'cod')
 
 <head>
     <meta charset="UTF-8">
-    <title>Tiến độ đơn hàng - <?php echo $order_id; ?></title>
+    <title>Tiến độ đơn hàng - <?php echo htmlspecialchars($order_id); ?></title>
 
     <style>
     * {
@@ -145,7 +163,7 @@ $successText = ($method === 'cod')
 
             <div class="step <?php echo ($status >= 2) ? 'active' : ''; ?>">
                 <div class="circle"></div>
-                <div class="label">Đang đóng gói</div>
+                <div class="label">Đang chuẩn bị hàng</div>
             </div>
 
             <div class="step <?php echo ($status >= 3) ? 'active' : ''; ?>">
@@ -155,15 +173,27 @@ $successText = ($method === 'cod')
 
             <div class="step <?php echo ($status >= 4) ? 'active' : ''; ?>">
                 <div class="circle"></div>
-                <div class="label">Thành công</div>
+                <div class="label">Giao hàng thành công</div>
             </div>
         </div>
 
         <div class="order-info">
-            <p><strong>Ngày đặt:</strong> <?php echo date("d/m/Y H:i"); ?></p>
+            <p><strong>Ngày đặt:</strong> <?php echo date("d/m/Y H:i", strtotime($order['created_at'])); ?></p>
+            <p><strong>Người nhận:</strong>
+                <?php echo htmlspecialchars($order['customer_name'] ?? 'Không có dữ liệu'); ?></p>
+            <p><strong>Email:</strong> <?php echo htmlspecialchars($order['customer_email'] ?? 'Không có dữ liệu'); ?>
+            </p>
+            <p><strong>Số điện thoại:</strong>
+                <?php echo htmlspecialchars($order['customer_phone'] ?? 'Không có dữ liệu'); ?></p>
+            <p><strong>Địa chỉ:</strong>
+                <?php echo htmlspecialchars($order['customer_address'] ?? 'Không có dữ liệu'); ?></p>
+            <p><strong>Ghi chú:</strong> <?php echo htmlspecialchars($order['order_note'] ?? 'Không có dữ liệu'); ?></p>
             <p><strong>Phương thức thanh toán:</strong> <?php echo $paymentText; ?></p>
+            <p><strong>Tên sản phẩm:</strong>
+                <?php echo htmlspecialchars($order['product_name'] ?? 'Không có dữ liệu'); ?>
+            </p>
             <p><strong>Tổng tiền:</strong>
-                <?php echo number_format($order['amount'], 0, ',', '.'); ?>VNĐ
+                <?php echo isset($order['amount']) ? number_format($order['amount'], 0, ',', '.') : '0'; ?> VNĐ
             </p>
             <p><strong>Dự kiến nhận hàng:</strong> 2 - 3 ngày tới</p>
         </div>
