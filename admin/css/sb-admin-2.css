@@ -10832,39 +10832,12 @@ a:focus {
 }
 
 .chart-area {
-  position: relative;
-  height: 10rem;
-  width: 100%;
-}
-
-@media (min-width: 768px) {
-  .chart-area {
-    height: 20rem;
-  }
-}
-
-.chart-bar {
-  position: relative;
-  height: 10rem;
-  width: 100%;
-}
-
-@media (min-width: 768px) {
-  .chart-bar {
-    height: 20rem;
-  }
+  height: 250px !important;
 }
 
 .chart-pie {
-  position: relative;
-  height: 15rem;
-  width: 100%;
-}
-
-@media (min-width: 768px) {
-  .chart-pie {
-    height: calc(20rem - 43px) !important;
-  }
+  height: 250px !important;
+  
 }
 
 .bg-login-image {

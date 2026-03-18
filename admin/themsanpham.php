@@ -66,7 +66,7 @@ require('./includes/header.php');
     <!-- Ảnh -->
     <div class="form-group mb-3">
         <label>Ảnh sản phẩm:</label>
-        <input type="file" name="anhs[]" multiple class="form-control">
+        <input type="file" id="anhs" name="anhs[]" multiple class="form-control">
     </div>
 
     <!-- Button -->
