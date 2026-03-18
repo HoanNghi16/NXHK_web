@@ -10,7 +10,25 @@ $productService = new ProductService($GLOBALS['conn']);
 $result = $productService->getProductById($id);
 $product = $result['product'] ?? null;
 
-if (!$product) { die("Sản phẩm không tồn tại."); }
+if (!$product) 
+{ 
+    die("Sản phẩm không tồn tại."); 
+}
+
+$images = $result['images'] ?? [];
+$thumbnail = '';
+
+foreach ($images as $img) {
+    if ($img['is_thumbnail'] == 1) {
+        $thumbnail = $img['path'];
+        break;
+    }
+}
+
+if (!$thumbnail && !empty($images)) {
+    $thumbnail = $images[0]['path'];
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -110,8 +128,8 @@ if (!$product) { die("Sản phẩm không tồn tại."); }
                     <tbody>
                         <tr>
                             <td style="width: 120px;">
-                                <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8"
-                                    style="width: 100%; height: auto; object-fit: cover; border-radius: 6px;">
+                                <img src="<?php echo $thumbnail; ?>"
+                                style="width: 100%; height: auto; object-fit: cover; border-radius: 6px;">
                             </td>
                             <td><?php echo $product['product_name']; ?></td>
                             <td><?php echo number_format($product['price'], 0, ',', '.'); ?>VNĐ</td>
