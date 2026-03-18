@@ -119,6 +119,7 @@
 .inputError {
   font-size: 13px;
   margin-top: 3px;
+  color: #aa0a0a;
 }
 .loginEptions input[type="checkbox"] {
   margin-right: 6px;

@@ -97,7 +97,7 @@ class ProductService
             $condition .= " AND category_name = '".$cate."' ";
         }
         if($price){
-            $condition .= " WHERE ";
+            $condition .= " AND ";
             switch($price){
                 case "5":
                     $condition .= " price < 5000000 ";

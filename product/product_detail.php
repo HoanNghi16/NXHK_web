@@ -83,7 +83,9 @@
                     ? number_format($product['price'], 0, ',', '.') . ' VNĐ'
                     : '0 đ'; ?>
                 </div>
-                
+                <?php
+                    echo '<p class="productDescription">'.$product['description'].'</p>';
+                ?>
                 <div class="product-button">
 
                     <!-- Thêm vào giỏ -->
@@ -99,7 +101,7 @@
 
                     <!-- Mua ngay -->
                     <form action="../checkout.php" method="GET">
-                        <input type="hidden" name="id" value="<?php echo $product['product_id']; ?>">
+                        <input type="hidden" name="btn-buy-now" value="<?php echo $product['product_id']; ?>">
 
                         <button type="submit" id="btn-buy-now">
                             Mua ngay!

@@ -11,6 +11,9 @@
             $result = $productService->fetchProductWithCondition($cate, $price, $sort, $page);
             $products = $result['products'];
             $total_pages = $result['total_pages'];
+            if (count($products)==0){
+                echo "Giỏ hàng trống";
+            }
             foreach ($products as $product => $detail){
                 echo '<a style="text-decoration: none; color: black;" href="./product_detail.php?id='.$detail['product_id'].'" class="productCard">
                         <img src="'.$detail['path'].'">

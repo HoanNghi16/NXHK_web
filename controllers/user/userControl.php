@@ -70,6 +70,23 @@
                 $toast->showToast($result, "error", 3000);
             }
         }
+        public function changeProfile($email,$new_email, $new_name, $password){
+            $toast = new ToastController();
+            $userService = new UserService($GLOBALS['conn']);
+            $checkLogin = $userService->login($email, $password);
+            if ($checkLogin === true){
+                $result = $userService->changeProfile($new_email, $new_name);
+                if ($result===true){
+                    $toast->showToast('Cập nhật thành công', 'success', 3000);
+                    return;
+                }else{
+                    $toast->showToast($result, "error", 3000);
+                }
+            }else{
+                $toast->showToast($checkLogin, "error", 3000);
+            }
+            return;
+        }
     }
 
     if (isset($_SERVER['REQUEST_METHOD']) && isset($_POST['logout'])){

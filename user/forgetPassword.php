@@ -22,7 +22,7 @@
     <?php echo $layout->getHeader()?>
     <div class="loginContainer">
         <div class="loginCard">
-            <h2>Quên mật khẩu</h2>
+            <h2>Xác thực email</h2>
             <form class='loginForm' method="POST">
                 <div class="inputGroup">
                     <label>Email</label>

@@ -3,7 +3,6 @@
   padding: 0;
   box-sizing: border-box;
 }
-
 /* ===== NAV ===== */
 .ProductNav {
   width: 100%;
@@ -38,7 +37,7 @@ span {
 
 /* ===== IMAGE ===== */
 .ProductImage {
-  width: 40%;
+  width: 37%;
   text-align: center;
   float: left;
   border-radius: 15px;
@@ -99,7 +98,7 @@ span {
   font-weight: bold;
   font-size: 24px;
   margin-top: 15px;
-  color: #6366f1;
+  color: #dc2626; /* đỏ đẹp (tailwind red-600) */
 }
 
 /* ===== BUTTON ===== */
@@ -147,27 +146,32 @@ span {
   margin-top: 50px;
 }
 
-/* ===== TABLE ===== */
 .specs-table {
   width: 1100px;
   border-collapse: collapse;
   margin-top: 15px;
   background: white;
+  border: 2px solid #9ca3af; /* viền ngoài đậm hơn */
 }
 
-.specs-table tr:nth-child(even) {
-  background: #f3f4f6;
+.specs-table tr {
+  border-bottom: 1px solid #d1d5db; /* kẻ ngang */
 }
 
 .specs-table td {
-  padding: 10px;
-  border: 1px solid #e5e7eb;
+  padding: 12px;
+  border-right: 1px solid #d1d5db; /* kẻ dọc */
+}
+
+.specs-table td:last-child {
+  border-right: none; /* bỏ viền cột cuối cho đẹp */
 }
 
 .spec-name {
   font-weight: 600;
   width: 40%;
   background: #e0e7ff;
+  border-right: 2px solid #9ca3af; /* phân cách rõ 2 cột */
 }
 
 .spec-value {
