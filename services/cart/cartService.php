@@ -51,26 +51,43 @@ class CartService
         if (!$id){
             return "Vui lòng đăng nhập";
         }
-        $checkExist_SQL = "SELECT * FROM CART_DETAILS WHERE PRODUCT_ID = '".$product_id."' AND USER_ID = '".$id."'";
-        $stmt = $this->conn->prepare($checkExist_SQL);
+        $sql = "UPDATE CART_DETAILS 
+                SET OD_QUANTITY = ? 
+                WHERE PRODUCT_ID = ? AND USER_ID = ?";
+
+        $stmt = $this->conn->prepare($sql);
+
         if (!$stmt){
-            return "Lỗi!!!";
-        }else{
-            $checkExist = $stmt->execute();
-            if ($checkExist){
-                $main_SQL = "UPDATE CART_DETAILS SET OD_QUANTITY = ".$quantity." WHERE PRODUCT_ID = '".$product_id."' AND USER_ID = '".$id."'";
-                $stmt = $this->conn->prepare($main_SQL);
-                if ($stmt){
-                    $result = $stmt->execute();
-                    if ($result){
-                        return true;
-                    }
-                    return "Lỗi";
-                }
+            die($this->conn->error);
+        }
+        $stmt->bind_param("iii", $quantity, $product_id, $id);
+        if ($stmt->execute()){
+            if ($stmt->affected_rows > 0){
+                return true;
+            } else {
+                return "Không tìm thấy sản phẩm trong giỏ";
             }
         }
-        return "Lỗi!!";
+        return "Lỗi khi cập nhật";
+    }
 
+    public function deleteCartDetail($product_id){
+        $id = $_SESSION['user_id'];
+        if (!$id){
+            return "Vui lòng đăng nhập!";
+        }
+
+        $sql = "DELETE FROM CART_DETAILS WHERE PRODUCT_ID = ? AND USER_ID = ? ";
+        $stmt = $this->conn->prepare($sql);
+        if (!$stmt){
+            die($this->conn->error);
+        }
+        $stmt->bind_param('is', $product_id, $id);
+        if ($stmt->execute()){
+            return true;
+        }else{
+            return "Xóa sản phẩm thất bại";
+        }
     }
 
     public function getCartByUser($user_id)

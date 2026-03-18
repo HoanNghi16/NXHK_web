@@ -5,6 +5,7 @@ require_once __DIR__."/../config/database.php";
 include '../services/cart/cartService.php';
 include '../controllers/cart/cartControl.php';
 
+$cartControl = new cartController($conn);
 $layout = new Layout();
 if (!isset($_SESSION['user_id'])) {
     echo "<p style='text-align:center;margin-top:50px;'>Vui lòng đăng nhập để xem giỏ hàng</p>";
@@ -15,9 +16,13 @@ $user_id = $_SESSION['user_id'];
 
 $cartService = new CartService($conn);
 
-if (isset($_POST['quantity'])){
-    $cartControl = new cartController($conn);
-    $cartControl->changeCart($_POST['action'],$_POST['od_quantity'], $_POST['product_id']);
+if (isset($_POST['remove'])){
+    $cartControl->deleteCart($_POST['remove']);
+}
+
+if (isset($_POST['increase']) || isset($_POST['decrease'])){
+    $action = isset($_POST['increase'])? 'increase': 'decrease';
+    $cartControl->changeCart($action,$_POST['od_quantity'], $_POST['product_id']);
 }
 
 $result = $cartService->getCartByUser($user_id);
@@ -74,9 +79,9 @@ $result = $cartService->getCartByUser($user_id);
                 <form method="POST" name="quantity">
                     <input hidden name="product_id" value=<?php echo "'".$row['product_id']."'"?>/>
                     <input hidden name="od_quantity" value=<?php echo "'".$row['od_quantity']."'"?>/>
-                    <button name="action" value="decrease">-</button>
+                    <button name="decrease" value="decrease">-</button>
                     <span><?php echo $row['od_quantity']; ?></span>
-                    <button name="action" value="increase">+</button>
+                    <button name="increase" value="increase">+</button>
                 </form>
             </div>
 
@@ -85,9 +90,7 @@ $result = $cartService->getCartByUser($user_id);
             </div>
 
             <form method="POST">
-                <input type="hidden" name="product_id" value="<?php echo $row['product_id']; ?>">
-                <input type="hidden" name="action" value="remove">
-                <button class="remove-btn">Xóa</button>
+                <button class="remove-btn" name="remove" value=<?php echo '"'.$row['product_id'].'"'?>>Xóa</button>
             </form>
 
         </div>
