@@ -1,12 +1,4 @@
-<?php
-session_start();
-// kiem tra neu khong co session user thi khogn cho phep vao trang quan tri
-// chuyenr qua trang login.php
-// if (!isset($_SESSION["user"])) {
-//   header("Location: index.php");
-//   die();
-// }
-?>
+
 <!DOCTYPE html>
 <html lang="en">
 
