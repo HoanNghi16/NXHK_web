@@ -7,7 +7,8 @@ require_once __DIR__ . "/layout/layout.php";
 $layout = new Layout();
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 $productService = new ProductService($GLOBALS['conn']);
-$product = $productService->getProductById($id);
+$result = $productService->getProductById($id);
+$product = $result['product'] ?? null;
 
 if (!$product) { die("Sản phẩm không tồn tại."); }
 ?>

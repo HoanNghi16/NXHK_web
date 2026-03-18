@@ -49,7 +49,7 @@ class ProductService
     {
         $sql = "SELECT * FROM product p
                 JOIN categories c ON p.category_id = c.category_id
-                WHERE p.product_id = ?";
+                WHERE p.product_id = ? AND quantity > 0";
 
         $stmt = $this->conn->prepare($sql);
 
@@ -92,7 +92,7 @@ class ProductService
         JOIN CATEGORIES C ON P.CATEGORY_ID = C.CATEGORY_ID 
         JOIN PRODUCT_IMAGES P_I ON P.PRODUCT_ID = P_I.PRODUCT_ID";
         $pageSql = "SELECT COUNT(*) as total FROM PRODUCT P JOIN CATEGORIES C ON P.CATEGORY_ID = C.CATEGORY_ID JOIN PRODUCT_IMAGES P_I ON P.PRODUCT_ID = P_I.PRODUCT_ID ";
-        $condition = " WHERE P_I.IS_THUMBNAIL = 1 ";
+        $condition = " WHERE P_I.IS_THUMBNAIL = 1 AND P.quantity > 0";
         if ($cate) {
             $condition .= " AND category_name = '".$cate."' ";
         }

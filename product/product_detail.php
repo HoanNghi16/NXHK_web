@@ -3,6 +3,7 @@
     require_once __DIR__."/../config/database.php";
     include '../services/product/productService.php';
     include '../layout/layout.php';
+    include '../controllers/cart/cartControl.php';
     $layout = new Layout();
     $id = $_GET["id"] ?? null;
 
@@ -13,12 +14,22 @@
     }
     $p = new ProductService($conn);
     $result = $p->getProductByID($id);
+    if (!$result){
+        header("Location: ./products.php");
+        exit;
+    }
     $product = $result['product'];
     $images = $result['images'];
     if (!$product) 
     {
         echo "Sản phẩm không tồn tại";
         exit;
+    }
+
+    $controller = new CartController($conn);
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $controller->addToCart();
     }
 ?>
 
@@ -74,8 +85,27 @@
                 </div>
                 
                 <div class="product-button">
-                    <button type="button" id="btn-add-to-cart">Thêm vào giỏ hàng <i class="fa-solid fa-cart-shopping"></i></button>
-                    <button type="button" id="btn-buy-now">Mua ngay!</button>
+
+                    <!-- Thêm vào giỏ -->
+                    <form method="POST">
+                        <input type="hidden" name="product_id" value="<?php echo $product['product_id']; ?>">
+                        <input type="hidden" name="quantity" value="1">
+                        <input type="hidden" name="action" value="add">
+
+                        <button type="submit" id="btn-add-to-cart">
+                            Thêm vào giỏ hàng <i class="fa-solid fa-cart-shopping"></i>
+                        </button>
+                    </form>
+
+                    <!-- Mua ngay -->
+                    <form action="../checkout.php" method="GET">
+                        <input type="hidden" name="id" value="<?php echo $product['product_id']; ?>">
+
+                        <button type="submit" id="btn-buy-now">
+                            Mua ngay!
+                        </button>
+                    </form>
+
                 </div>
        
             </div>
