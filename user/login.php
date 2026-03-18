@@ -46,11 +46,7 @@
                 </div>
 
                 <div class="loginOptions">
-                    <label>
-                        <input type="checkbox" name="remember"> Ghi nhớ đăng nhập
-                    </label>
-
-                    <a href="#">Quên mật khẩu?</a>
+                    <a href="./forgetPassword.php">Quên mật khẩu?</a>
                 </div>
 
                 <button class="loginBtn">Đăng nhập</button>

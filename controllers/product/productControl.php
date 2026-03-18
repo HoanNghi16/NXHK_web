@@ -11,13 +11,19 @@
             $result = $productService->fetchProductWithCondition($cate, $price, $sort, $page);
             $products = $result['products'];
             $total_pages = $result['total_pages'];
+            if (count($products)==0){
+                echo "Giỏ hàng trống";
+            }
             foreach ($products as $product => $detail){
-                echo '<div class="productCard">
-                        <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8">
+                echo '<a style="text-decoration: none; color: black;" href="./product_detail.php?id='.$detail['product_id'].'" class="productCard">
+                        <img src="'.$detail['path'].'">
                         <h4>'.$detail['product_name'].'</h4>
                         <p class="price">'.number_format($detail['price'], 0, ',', '.').'đ</p>
-                        <button>Mua ngay</button>
-                    </div>';
+                        <form action="../checkout.php" method="GET" >
+                            <input type="hidden" name="id" value="'.$detail['product_id'].'">
+                            <button>Mua ngay</button>
+                        </form>     
+                    </a>';
             }
             return $total_pages;
         }
