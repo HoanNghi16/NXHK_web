@@ -5,11 +5,12 @@ require_once __DIR__ . "/layout/layout.php";
 $layout = new Layout();
 
 $order_id = $_GET['order_id'] ?? ($_GET['vnp_TxnRef'] ?? null);
-$method = $_GET['method'] ?? 'cod';
 date_default_timezone_set('Asia/Ho_Chi_Minh');
 
+$order = null;
+
 if ($order_id) {
-    $stmt = $GLOBALS['conn']->prepare("SELECT * FROM orders WHERE order_code = ?");
+    $stmt = $conn->prepare("SELECT * FROM orders WHERE order_code = ?");
     $stmt->bind_param("s", $order_id);
     $stmt->execute();
     $order = $stmt->get_result()->fetch_assoc();
@@ -17,36 +18,20 @@ if ($order_id) {
 
 if (!$order) {
     die("Đơn hàng không tồn tại!");
-}   
+} 
 
 $status = $order['status'];
 
 $paymentText = "Không xác định";
-if ($order) {
-    if ($method === 'cod') {
-        $paymentText = "Thanh toán khi nhận hàng";
-    } else {
-        $paymentText = "VNPay (ATM/Visa/QR)";
-    }
-}
-$successText = ($method === 'cod') 
+$paymentText = ($order['payment_method'] === 'cod')
+    ? "Thanh toán khi nhận hàng"
+    : "VNPay (ATM/Visa/QR)";
+
+$successText = ($order['payment_method'] === 'cod') 
     ? "Đặt hàng thành công" 
     : "Thanh toán thành công";
 
 $vnp_ResponseCode = $_GET['vnp_ResponseCode'] ?? null;
-
-
-if ($method !== 'cod' && isset($_GET['vnp_ResponseCode'])) {
-    if ($_GET['vnp_ResponseCode'] !== '00') {
-        $error_msg = "Thanh toán VNPay thất bại (mã lỗi: " . htmlspecialchars($_GET['vnp_ResponseCode']) . "). Đơn hàng của bạn có thể chưa được xác nhận.";
-        // Có thể update status = 0 (thất bại) ở đây nếu cần
-    } else {
-        // Thành công → update status = 1 (đã thanh toán) nếu chưa
-        $updateStmt = $GLOBALS['conn']->prepare("UPDATE orders SET status = 2 WHERE order_code = ? AND status = 1");
-        $updateStmt->bind_param("s", $order_id);
-        $updateStmt->execute();
-    }
-}
 
 ?>
 
@@ -56,93 +41,7 @@ if ($method !== 'cod' && isset($_GET['vnp_ResponseCode'])) {
 <head>
     <meta charset="UTF-8">
     <title>Tiến độ đơn hàng - <?php echo htmlspecialchars($order_id); ?></title>
-
-    <style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto;
-    }
-
-    body {
-        background: #f4f7f6;
-    }
-
-    .status-container {
-        max-width: 800px;
-        margin: 120px auto;
-        background: #fff;
-        padding: 40px;
-        border-radius: 12px;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-    }
-
-    .timeline {
-        display: flex;
-        justify-content: space-between;
-        position: relative;
-        margin-top: 50px;
-    }
-
-    .timeline::before {
-        content: '';
-        position: absolute;
-        top: 15px;
-        left: 0;
-        width: 100%;
-        height: 4px;
-        background: #e0e0e0;
-        z-index: 1;
-    }
-
-    .step {
-        position: relative;
-        z-index: 2;
-        text-align: center;
-        width: 25%;
-    }
-
-    .circle {
-        width: 34px;
-        height: 34px;
-        background: #fff;
-        border: 4px solid #e0e0e0;
-        border-radius: 50%;
-        margin: 0 auto 10px;
-    }
-
-    .step.active .circle {
-        border-color: #007bff;
-        background: #007bff;
-    }
-
-    .step.active .label {
-        color: #007bff;
-        font-weight: bold;
-    }
-
-    .label {
-        font-size: 14px;
-        color: #888;
-    }
-
-    .order-info {
-        margin-top: 40px;
-        padding: 20px;
-        border: 1px solid #eee;
-        border-radius: 8px;
-        background: #fafafa;
-    }
-
-    .success-badge {
-        color: #28a745;
-        font-weight: bold;
-        font-size: 20px;
-        display: block;
-        margin-bottom: 20px;
-    }
-    </style>
+    <link rel="stylesheet" href="../NXHK_web/style/order_status.css">
 </head>
 
 <body>
@@ -192,6 +91,7 @@ if ($method !== 'cod' && isset($_GET['vnp_ResponseCode'])) {
             <p><strong>Tên sản phẩm:</strong>
                 <?php echo htmlspecialchars($order['product_name'] ?? 'Không có dữ liệu'); ?>
             </p>
+            <p><strong>Số lượng:</strong> <?php echo $order['quantity']; ?></p>
             <p><strong>Tổng tiền:</strong>
                 <?php echo isset($order['amount']) ? number_format($order['amount'], 0, ',', '.') : '0'; ?> VNĐ
             </p>

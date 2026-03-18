@@ -2,15 +2,13 @@
 error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
 date_default_timezone_set('Asia/Ho_Chi_Minh');
 
-require_once __DIR__ . '/../config/database.php';  // ← Fix lỗi $conn
-require_once __DIR__ . '/config.php';              // config VNPay
+require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/config.php';
 
-// Kiểm tra POST cơ bản
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     die("Phương thức không hợp lệ");
 }
 
-// Validate & lấy dữ liệu từ form (tính lại amount để an toàn)
 $product_id     = (int)($_POST['product_id'] ?? 0);
 $quantity       = max(1, (int)($_POST['quantity'] ?? 1));
 $customer_name  = trim($_POST['customer_name'] ?? '');
@@ -23,7 +21,6 @@ if ($product_id <= 0) {
     die("Thiếu thông tin sản phẩm");
 }
 
-// Tải sản phẩm để tính lại amount (bảo mật)
 require_once __DIR__ . '/../services/product/productService.php';
 $productService = new ProductService($GLOBALS['conn']);
 $product = $productService->getProductById($product_id);
@@ -41,8 +38,8 @@ $stmt = $conn->prepare("
     INSERT INTO orders (
         order_code, product_name, amount, quantity,
         customer_name, customer_email, customer_phone, customer_address, order_note,
-        status, created_at, payment_method
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), 'vnpay')
+        status, created_at, payment_method, is_emailed
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), 'vnpay', 0)
 ");
 $status = 1;
 $stmt->bind_param(
@@ -64,13 +61,10 @@ if (!$stmt->execute()) {
     die("Lỗi hệ thống khi tạo đơn hàng. Vui lòng thử lại sau.");
 }
 
-// Dùng order_code làm vnp_TxnRef
 $vnp_TxnRef = $order_code;
 
-// Tiếp tục phần VNPay params (giữ nguyên code cũ của bạn)
-$vnp_Amount = $real_amount;  // dùng giá tính lại
+$vnp_Amount = $real_amount;
 
-// ... (phần còn lại: $inputData, ksort, hash, redirect)
 $startTime = date("YmdHis");
 $expire = date('YmdHis', strtotime('+15 minutes', strtotime($startTime)));
 
@@ -90,7 +84,6 @@ $inputData = array(
     "vnp_ExpireDate" => $expire
 );
 
-// Build query & hash (cách cũ của bạn OK, nhưng có thể cải tiến)
 ksort($inputData);
 
 $hashdata = "";
