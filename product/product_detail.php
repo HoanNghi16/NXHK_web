@@ -72,7 +72,9 @@
                     ? number_format($product['price'], 0, ',', '.') . ' VNĐ'
                     : '0 đ'; ?>
                 </div>
-                
+                <?php
+                    echo '<p class="productDescription">'.$product['description'].'</p>';
+                ?>
                 <div class="product-button">
                     <button type="button" id="btn-add-to-cart">Thêm vào giỏ hàng <i class="fa-solid fa-cart-shopping"></i></button>
                     <button type="button" id="btn-buy-now">Mua ngay!</button>

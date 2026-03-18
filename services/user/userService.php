@@ -173,5 +173,48 @@
                 return "Mật khẩu không đúng";
             }
         }
+
+        public function changeProfile($new_email, $new_name){
+            $id = $_SESSION['user_id'];
+            if (!$id){
+                die('Lỗi!!!!!');
+            }
+            if ($new_email){
+                echo "Đây là new_email".$new_email;
+                $sql = "SELECT EMAIL FROM USER WHERE EMAIL ='".$new_email."'";
+                $stmt = $this->conn->prepare($sql);
+                $checkMail = $stmt->execute();
+                $checkMail = $checkMail->get_result();
+                if ($checkMail->num_rows > 0){
+                    return "Email đã tồn tại";
+                }else{
+                    $sql = "UPDATE USER SET EMAIL = '".$new_email."' WHERE ID ='".$id."'";
+                    $stmt = $this->conn->prepare($sql);
+                    if (!$stmt->execute()){
+                        return false;
+                    }
+                }   
+                
+            }
+            if ($new_name){
+                echo "Đây là new_name".$new_name;
+                $sql = "UPDATE 'user' SET NAME = '".$new_name."' WHERE id ='".$id."'";
+                $stmt = $this->conn->prepare($sql);
+                if (!$stmt->execute()){
+                    return false;
+                }
+            }
+            $stmt = $this->conn->prepare("SELECT * FROM user WHERE id = '".$id."'");
+            if(!$stmt->execute()){
+                return false;
+            }
+            $user = $stmt->get_result()->fetch_assoc();
+            echo json_encode($user);
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['user_name'] = $user['name'];
+            $_SESSION['user_role'] = $user['role'];
+            $_SESSION['user_email'] = $user['email'];
+            return true;
+        }
     }
 ?>
