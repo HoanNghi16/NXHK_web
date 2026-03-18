@@ -29,8 +29,9 @@ if (!$product) {
     die("Sản phẩm không tồn tại");
 }
 
-$real_amount    = $product['price'] * $quantity;
-$product_name   = $product['product_name'];
+$product_name = $product['product']['product_name'];
+$price = (int)$product['product']['price'];
+$real_amount = $price * $quantity;
 
 $order_code = 'ORD' . date('YmdHis') . mt_rand(1000, 9999);
 

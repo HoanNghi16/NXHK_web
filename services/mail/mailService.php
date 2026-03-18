@@ -54,25 +54,20 @@ class MailService{
                 <th>Giá</th>
             </tr>
         ";
-        echo "<pre>";
-        print_r($order['items']);
-        die();
-        foreach ($order['items'] as $item) {
-            $itemsHtml = "
-                <table border='1' cellpadding='8' cellspacing='0' style='border-collapse: collapse; width:100%'>
-                    <tr>
-                        <th>Sản phẩm</th>
-                        <th>Số lượng</th>
-                        <th>Giá</th>
-                    </tr>
-                    <tr>
-                        <td>{$item['product_name']}</td>
-                        <td>{$item['quantity']}</td>
-                        <td>" . number_format($item['price'] * $item['quantity'], 0, ',', '.') . " VNĐ</td>
-                    </tr>
-                </table>
-                ";
-        }
+        $itemsHtml = "
+        <table border='1' cellpadding='8' cellspacing='0' style='border-collapse: collapse; width:100%'>
+            <tr>
+                <th>Sản phẩm</th>
+                <th>Số lượng</th>
+                <th>Giá</th>
+            </tr>
+            <tr>
+                <td>{$order['product_name']}</td>
+                <td>{$order['quantity']}</td>
+                <td>" . number_format($order['amount'], 0, ',', '.') . " VNĐ</td>
+            </tr>
+        </table>
+        ";
         $itemsHtml .= "</table>";
         try {
             $mail->isSMTP();
