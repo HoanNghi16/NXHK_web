@@ -11,6 +11,9 @@ class CartService
     {
         $sql="SELECT od_quantity FROM cart_details WHERE user_id=? AND product_id=?";
         $stmt=$this->conn->prepare($sql);
+        if (!$stmt){
+            die($this->conn->error);
+        }
         $stmt->bind_param("si", $user_id, $product_id);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -42,6 +45,33 @@ class CartService
 
     }
 
+
+    public function changeCartQuantity($quantity, $product_id){
+        $id = $_SESSION['user_id'];
+        if (!$id){
+            return "Vui lòng đăng nhập";
+        }
+        $checkExist_SQL = "SELECT * FROM CART_DETAILS WHERE PRODUCT_ID = '".$product_id."' AND USER_ID = '".$id."'";
+        $stmt = $this->conn->prepare($checkExist_SQL);
+        if (!$stmt){
+            return "Lỗi!!!";
+        }else{
+            $checkExist = $stmt->execute();
+            if ($checkExist){
+                $main_SQL = "UPDATE CART_DETAILS SET OD_QUANTITY = ".$quantity." WHERE PRODUCT_ID = '".$product_id."' AND USER_ID = '".$id."'";
+                $stmt = $this->conn->prepare($main_SQL);
+                if ($stmt){
+                    $result = $stmt->execute();
+                    if ($result){
+                        return true;
+                    }
+                    return "Lỗi";
+                }
+            }
+        }
+        return "Lỗi!!";
+
+    }
 
     public function getCartByUser($user_id)
         {

@@ -3,6 +3,7 @@ session_start();
 include("../layout/layout.php");
 require_once __DIR__."/../config/database.php";
 include '../services/cart/cartService.php';
+include '../controllers/cart/cartControl.php';
 
 $layout = new Layout();
 if (!isset($_SESSION['user_id'])) {
@@ -13,6 +14,12 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 
 $cartService = new CartService($conn);
+
+if (isset($_POST['quantity'])){
+    $cartControl = new cartController($conn);
+    $cartControl->changeCart($_POST['action'],$_POST['od_quantity'], $_POST['product_id']);
+}
+
 $result = $cartService->getCartByUser($user_id);
 ?>
 
@@ -64,18 +71,12 @@ $result = $cartService->getCartByUser($user_id);
             </div>
 
             <div class="cart-quantity">
-                <form method="POST">
-                    <input type="hidden" name="product_id" value="<?php echo $row['product_id']; ?>">
-                    <input type="hidden" name="action" value="decrease">
-                    <button>-</button>
-                </form>
-
-                <span><?php echo $row['od_quantity']; ?></span>
-
-                <form method="POST">
-                    <input type="hidden" name="product_id" value="<?php echo $row['product_id']; ?>">
-                    <input type="hidden" name="action" value="increase">
-                    <button>+</button>
+                <form method="POST" name="quantity">
+                    <input hidden name="product_id" value=<?php echo "'".$row['product_id']."'"?>/>
+                    <input hidden name="od_quantity" value=<?php echo "'".$row['od_quantity']."'"?>/>
+                    <button name="action" value="decrease">-</button>
+                    <span><?php echo $row['od_quantity']; ?></span>
+                    <button name="action" value="increase">+</button>
                 </form>
             </div>
 

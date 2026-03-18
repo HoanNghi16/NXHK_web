@@ -45,6 +45,32 @@ class CartController
             $this->toast->showToast("Thêm vào giỏ hàng thất bại!", "error", 2000);
         }
     }
+
+    public function changeCart($action, $quantity, $product_id){
+        $toast = new ToastController();
+        $cartService = new cartService($GLOBALS['conn']);
+        if (!$action || $action == ''){
+            $toast->showToast('Đã xảy ra lỗi!', "error", 3000);
+        }
+        if ($action == "increase"){
+            $result = $cartService->changeCartQuantity($quantity + 1);
+            if ($result === true){
+                return;
+            }
+            else{
+                $toast->showToast($result, "error", 3000);
+            }
+        }
+        else{
+            $result = $cartService->changeCart($quantity - 1);
+            if ($result === true){
+                return;
+            }
+            else{
+                $toast->showToast($result, "error", 3000);
+            }
+        }
+    }
 }
 
 
