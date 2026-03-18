@@ -24,8 +24,6 @@ class ProductService
         }
         $checkStmt->close();
 
-
-        // 1. Mã hóa mảng specs thành chuỗi JSON để lưu vào database
         $jsonSpecs=json_encode($data['specs'], JSON_UNESCAPED_UNICODE);
         $sql="INSERT INTO product (category_id, product_name, price, description, specifications) VALUES (?, ?, ?, ?,?)";
         $stmt=$this->conn->prepare($sql);
@@ -51,7 +49,7 @@ class ProductService
     {
         $sql = "SELECT * FROM product p
                 JOIN categories c ON p.category_id = c.category_id
-                WHERE p.product_id = ?";
+                WHERE p.product_id = ? AND quantity > 0";
 
         $stmt = $this->conn->prepare($sql);
 
@@ -72,26 +70,34 @@ class ProductService
             if (isset($product['specifications'])) {
                 $product['specs'] = json_decode($product['specifications'], true);
             }
-
-            return $product;
+            $stmt->prepare("SELECT * FROM PRODUCT_IMAGES WHERE PRODUCT_ID = ?");
+            $stmt->bind_param('s', $product['product_id']);
+            if($stmt->execute()){
+                $result = $stmt->get_result();
+                $images = [];
+                while ($row = $result->fetch_assoc()){
+                    $images[] = $row;
+                }
+            }else{
+                $images = "Không có ảnh nào để hiển thị";
+            }
+            return ['product'=> $product, 'images'=>$images];
         }
 
         return null; // không tìm thấy
     }
 
     public function fetchProductWithCondition($cate, $price, $sort, $page){
-        $sql = "SELECT product_id, product_name, price FROM PRODUCT P JOIN CATEGORIES C ON P.CATEGORY_ID = C.CATEGORY_ID ";
-        $pageSql = "SELECT COUNT(*) as total FROM PRODUCT P JOIN CATEGORIES C ON P.CATEGORY_ID = C.CATEGORY_ID ";
-        $condition = "";
+        $sql = "SELECT P.product_id, product_name, price, path FROM PRODUCT P 
+        JOIN CATEGORIES C ON P.CATEGORY_ID = C.CATEGORY_ID 
+        JOIN PRODUCT_IMAGES P_I ON P.PRODUCT_ID = P_I.PRODUCT_ID";
+        $pageSql = "SELECT COUNT(*) as total FROM PRODUCT P JOIN CATEGORIES C ON P.CATEGORY_ID = C.CATEGORY_ID JOIN PRODUCT_IMAGES P_I ON P.PRODUCT_ID = P_I.PRODUCT_ID ";
+        $condition = " WHERE P_I.IS_THUMBNAIL = 1 AND P.quantity > 0";
         if ($cate) {
-            $condition .= " WHERE category_name = '".$cate."' ";
+            $condition .= " AND category_name = '".$cate."' ";
         }
         if($price){
-            if(strpos($condition, "WHERE") !== false){
-                $condition .= " AND ";
-            }else{
-                $condition .= " WHERE ";
-            }
+            $condition .= " AND ";
             switch($price){
                 case "5":
                     $condition .= " price < 5000000 ";

@@ -14,7 +14,6 @@ function validPassword(e){
     }
 }
 function validEmail(e) {
-    console.log('tới đây rồi nè')
     email = e.value;
     let error = document.getElementById("email-error");
     if (!email || email == "") {

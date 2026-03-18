@@ -25,11 +25,12 @@
 
         <div class="hero-content">
 
-          <h1>Công nghệ của tương lai</h1>
+          <h1>Công nghệ của thời đại</h1>
 
-          <p>Khám phá thiết bị công nghệ mới nhất với hiệu năng vượt trội</p>
-
-          <button>Khám phá ngay</button>
+          <p>Khám phá thiết bị công nghệ mới nhất của Neo Store</p>
+          <form action="./product/products.php">
+            <button >Khám phá ngay</button>
+          </form>
 
         </div>
 

@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 include("../layout/layout.php");
 
@@ -10,6 +9,10 @@ require_once("../toast/toast.php");
 $userService = new UserService($conn);
 $toast = new ToastController();
 $layout = new Layout();
+
+if (!isset($_SESSION['action'])){
+    header('Location: ./login.php');
+}
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     $otp = $_POST["otp"];
