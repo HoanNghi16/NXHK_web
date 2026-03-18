@@ -1,6 +1,5 @@
 <?php
     class Layout {
-
         private function formatName(){
             if (isset($_SESSION['user_name'])){
                 $name = explode( ' ',$_SESSION['user_name']);
@@ -8,7 +7,6 @@
             }
             return "";
         }
-        
         public function getHeader(){
             $buttons = $this->getUserButtons();
             return '
