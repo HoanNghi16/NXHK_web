@@ -16,7 +16,6 @@ if(isset($_POST['submitChange']) && $_POST['submitChange'] =="submit"){
     $new_email = $_POST['new_email'] ?? null;
     $new_name = $_POST['new_name'] ?? null;
     $password = $_POST['password'] ?? null;
-    echo $email.$new_name;
     $userControl->changeProfile($email, $new_email, $new_name, $password);
 }
 
@@ -27,6 +26,7 @@ if (isset($_POST['edit']) && $_POST['edit'] == 'editProfile'){
                 document.getElementById("modal").remove();
             }
         </script>
+        <script src="../js/formError.js"></script>
         <div class="modalBackground" id="modal" style="width: 100dvw; height: 100dvh; position: fixed; background-color: rgb(0,0,0,0.5); z-index: 1000;">
             <div class="loginCard" style="margin: 100px auto;">
                 <button onclick="closeModal()" style="position: relative; top: 0px; right: 0px; left: 100%; width: 20px; height: 20px; background: none; color: white; border: none; font-size: 15px;">X</button>
@@ -35,11 +35,13 @@ if (isset($_POST['edit']) && $_POST['edit'] == 'editProfile'){
                     <h5 style="margin-bottom: 20px; text-align:center;">Hãy nhập thông tin bạn muốn thay đổi</h5>
                     <div class="inputGroup">
                         <label>Email mới</label>
-                        <input type="email" name="new_email"/>
+                        <input type="email" name="new_email" onkeyup="validEmail(this)"/>
+                        <span style="color: #d12727" id="email-error" class="inputError"></span>
                     </div>
                     <div class="inputGroup">
                         <label>Họ và tên mới</label>
-                        <input type="text" name="new_name"/>
+                        <input type="text" name="new_name" onkeyup="validName(this)"/>
+                        <span style="color: #d12727" id="name-error" class="inputError"></span>
                     </div>
                     <div class="inputGroup" >
                         <label>Xác nhận mật khẩu</label>
@@ -91,11 +93,13 @@ if (isset($_POST['edit']) && $_POST['edit'] == 'editProfile'){
                 <label>ID người dùng</label>
                 <p><?php echo $_SESSION['user_id']; ?></p>
             </div>
-
         </div>
         <form method="POST">
             <button class="edit-btn" name="edit" value="editProfile">
                 Chỉnh sửa hồ sơ
+            </button>
+            <button class="edit-btn" style="margin-top: 10px;" name="changePassword">
+                <a href="../user/forgetPassword.php" style="text-decoration: none; color: white">Đổi mật khẩu</a>
             </button>
         </form>
     </div>
