@@ -89,7 +89,7 @@
                 <div class="product-button">
 
                     <!-- Thêm vào giỏ -->
-                    <form method="POST">
+                    <form method="POST" style="max-width: 50%; margin: 0; float: left;">
                         <input type="hidden" name="product_id" value="<?php echo $product['product_id']; ?>">
                         <input type="hidden" name="quantity" value="1">
                         <input type="hidden" name="action" value="add">
@@ -100,7 +100,7 @@
                     </form>
 
                     <!-- Mua ngay -->
-                    <form action="../checkout.php" method="GET">
+                    <form action="../checkout.php"  style="max-width: 50%; margin: 0 10px; float: left;" method="GET">
                         <input type="hidden" name="btn-buy-now" value="<?php echo $product['product_id']; ?>">
 
                         <button type="submit" id="btn-buy-now">

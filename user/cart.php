@@ -40,12 +40,14 @@ $result = $cartService->getCartByUser($user_id);
 
         <?php
         $totalMoney = 0;
+        $totalQuantity = 0;
 
         if ($result && $result->num_rows > 0):
 
             while ($row = $result->fetch_assoc()):
                 $total = $row['price'] * $row['od_quantity'];
                 $totalMoney += $total;
+                $totalQuantity += $row['od_quantity'];
         ?>
 
         <div class="cart-item">
@@ -62,7 +64,7 @@ $result = $cartService->getCartByUser($user_id);
             </div>
 
             <div class="cart-quantity">
-                <form action="../controller/cartController.php" method="POST">
+                <form method="POST">
                     <input type="hidden" name="product_id" value="<?php echo $row['product_id']; ?>">
                     <input type="hidden" name="action" value="decrease">
                     <button>-</button>
@@ -70,7 +72,7 @@ $result = $cartService->getCartByUser($user_id);
 
                 <span><?php echo $row['od_quantity']; ?></span>
 
-                <form action="../controller/cartController.php" method="POST">
+                <form method="POST">
                     <input type="hidden" name="product_id" value="<?php echo $row['product_id']; ?>">
                     <input type="hidden" name="action" value="increase">
                     <button>+</button>
@@ -81,7 +83,7 @@ $result = $cartService->getCartByUser($user_id);
                 <?php echo number_format($total, 0, ',', '.') . ' đ'; ?>
             </div>
 
-            <form action="../controller/cartController.php" method="POST">
+            <form method="POST">
                 <input type="hidden" name="product_id" value="<?php echo $row['product_id']; ?>">
                 <input type="hidden" name="action" value="remove">
                 <button class="remove-btn">Xóa</button>
@@ -100,11 +102,23 @@ $result = $cartService->getCartByUser($user_id);
     <!-- RIGHT -->
     <div class="cart-right">
         <div class="cart-summary">
-            <p>Tổng tiền:</p>
-            <h3><?php echo number_format($totalMoney, 0, ',', '.'); ?> đ</h3>
-            <button class="checkout-btn">Thanh toán</button>
+            <h1>Kết quả đơn hàng</h1>
+
+            <div class="summary-row">
+                <span>Tổng sản phẩm:</span>
+                <span><?php echo $totalQuantity; ?></span>
+            </div>
+
+            <hr>
+
+            <div class="summary-row total">
+                <span>Tổng cộng:</span>
+                <span style=" color: rgb(184, 41, 41);"><?php echo number_format($totalMoney, 0, ',', '.'); ?> đ</span>
+            </div>
+
+            <button class="checkout-btn">Đặt hàng</button>
         </div>
-    </div>
+</div>
 
 </div>
 

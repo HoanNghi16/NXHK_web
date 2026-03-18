@@ -61,5 +61,6 @@ class CartService
 
             return $stmt->get_result();
         }
+
 }   
 ?>
