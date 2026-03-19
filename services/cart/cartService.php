@@ -51,6 +51,17 @@ class CartService
         if (!$id){
             return "Vui lòng đăng nhập";
         }
+
+        $checkQuant_SQL = "SELECT QUANTITY FROM PRODUCT WHERE PRODUCT_ID = ? AND QUANTITY >=?";
+        $stmt = $this->conn->prepare($checkQuant_SQL);
+        $stmt->bind_param('ii', $product_id, $quantity);
+        if ($stmt->execute()){
+            $checkQuant = $stmt->get_result();
+            if($checkQuant->num_rows == 0){
+                return "Không đủ sản phẩm";
+            }
+        }
+
         $sql = "UPDATE CART_DETAILS 
                 SET OD_QUANTITY = ? 
                 WHERE PRODUCT_ID = ? AND USER_ID = ?";

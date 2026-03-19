@@ -52,6 +52,10 @@ class CartController
         if (!$action || $action == ''){
             $toast->showToast('Đã xảy ra lỗi!', "error", 3000);
         }
+        if ($quantity <= 1 && $action == "decrease"){
+            $toast->showToast('Số lượng phải lớn hơn 0', 'error', 3000);
+            return;
+        }
         $result = $cartService->changeCartQuantity($action == "increase"? $quantity+1 : $quantity-1, $product_id);
         if ($result === true){
             return;
