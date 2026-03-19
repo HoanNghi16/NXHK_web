@@ -83,6 +83,15 @@ class MailService{
 
             $mail->isHTML(true);
             $mail->Subject = 'Xác nhận đơn hàng #' . $order['order_code'];
+            $paymentText = '';
+
+            if ($order['payment_method'] == 'cod') {
+                $paymentText = 'Thanh toán khi nhận hàng (COD)';
+            } elseif ($order['payment_method'] == 'vnpay') {
+                $paymentText = 'Thanh toán qua VNPAY (ATM / VISA / QR)';
+            } else {
+                $paymentText = 'Không xác định';
+            }
 
             $orderLink = "http://localhost/NXHK_web/order_status.php?order_id=" . $order['order_code'];
 
@@ -95,7 +104,7 @@ class MailService{
                 <p><b>Số điện thoại:</b> {$order['customer_phone']}</p>
                 <p><b>Địa chỉ:</b> {$order['customer_address']}</p>
                 <p><b>Ghi chú:</b> {$order['order_note']}</p>
-                <p><b>Phương thức thanh toán:</b> {$order['payment_method']}</p>
+                <p><b>Phương thức thanh toán:</b> {$paymentText}</p>
                 <p><b>Danh sách sản phẩm:</b></p>
                 {$itemsHtml}
                 <p><b>Tổng tiền:</b> " . number_format($order['amount'], 0, ',', '.') . " VNĐ</p>

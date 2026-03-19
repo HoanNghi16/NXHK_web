@@ -26,6 +26,7 @@ if (isset($_POST['increase']) || isset($_POST['decrease'])){
 }
 
 $result = $cartService->getCartByUser($user_id);
+
 ?>
 
 <!DOCTYPE html>
@@ -39,89 +40,106 @@ $result = $cartService->getCartByUser($user_id);
 <body>
 
 <?php echo $layout->getHeader(); ?>
+<form method="POST" id="cartForm">
+    <div class="CartContainer">
 
-<div class="CartContainer">
+        <!-- LEFT -->
+        <div class="cart-left">
+            <h2>Giỏ hàng của bạn</h2>
 
-    <!-- LEFT -->
-    <div class="cart-left">
-        <h2>Giỏ hàng của bạn</h2>
-        <?php
-        $totalMoney = 0;
-        $totalQuantity = 0;
+            <?php
+            $totalMoney = 0;
+            $totalQuantity = 0;
 
-        if ($result && $result->num_rows > 0):
+            if ($result && $result->num_rows > 0):
 
-            while ($row = $result->fetch_assoc()):
-                $total = $row['price'] * $row['od_quantity'];
-                $totalMoney += $total;
-                $totalQuantity += $row['od_quantity'];
-        ?>
+                while ($row = $result->fetch_assoc()):
+                    $total = $row['price'] * $row['od_quantity'];
+                    $totalMoney += $total;
+                    $totalQuantity += $row['od_quantity'];
+            ?>
 
-        <div class="cart-item">
+            <div class="cart-item">
+                <input type="radio" name="product_id" value="<?php echo $row['product_id']; ?>" required>
+                <img src="<?php echo $row['path'] ?? 'default.jpg'; ?>" class="cart-img">
+                <div class="cart-info">
+                    <h4><?php echo $row['product_name']; ?></h4>
+                    <p class="price">
+                        <?php echo number_format($row['price'], 0, ',', '.'); ?> đ
+                    </p>
+                </div>
 
-            <input type="checkbox" class="item-check">
+                <div class="cart-quantity">
+                    <form method="POST" name="quantity">
+                        <input hidden name="product_id" value=<?php echo "'".$row['product_id']."'"?>/>
+                        <input hidden name="od_quantity" value=<?php echo "'".$row['od_quantity']."'"?>/>
+                        <button name="decrease" value="decrease" class="quantityBtn">-</button>
+                        <span><?php echo $row['od_quantity']; ?></span>
+                        <button name="increase" value="increase" class="quantityBtn">+</button>
+                    </form>
+                </div>
 
-            <img src="<?php echo $row['path'] ?? 'default.jpg'; ?>" class="cart-img">
+                <div class="cart-total">
+                    <?php echo number_format($total, 0, ',', '.') . ' đ'; ?>
+                </div>
 
-            <div class="cart-info">
-                <h4><?php echo $row['product_name']; ?></h4>
-                <p class="price">
-                    <?php echo number_format($row['price'], 0, ',', '.'); ?> đ
-                </p>
-            </div>
-
-            <div class="cart-quantity">
-                <form method="POST" name="quantity">
-                    <input hidden name="product_id" value=<?php echo "'".$row['product_id']."'"?>/>
-                    <input hidden name="od_quantity" value=<?php echo "'".$row['od_quantity']."'"?>/>
-                    <button name="decrease" value="decrease" class="quantityBtn">-</button>
-                    <span><?php echo $row['od_quantity']; ?></span>
-                    <button name="increase" value="increase" class="quantityBtn">+</button>
+                <form method="POST">
+                    <button class="remove-btn" name="remove" value=<?php echo '"'.$row['product_id'].'"'?>>Xóa</button>
                 </form>
+
             </div>
 
-            <div class="cart-total">
-                <?php echo number_format($total, 0, ',', '.') . ' đ'; ?>
-            </div>
+            <?php endwhile; else: ?>
 
-            <form method="POST">
-                <button class="remove-btn" name="remove" value=<?php echo '"'.$row['product_id'].'"'?>>Xóa</button>
-            </form>
+                <p>Giỏ hàng trống</p>
+
+            <?php endif; ?>
 
         </div>
 
-        <?php endwhile; else: ?>
+        <!-- RIGHT -->
+        <div class="cart-right">
+            <div class="cart-summary">
+                <h1>Kết quả đơn hàng</h1>
 
-            <p>Giỏ hàng trống</p>
+                <div class="summary-row">
+                    <span>Tổng sản phẩm:</span>
+                    <span><?php echo $totalQuantity; ?></span>
+                </div>
 
-        <?php endif; ?>
+                <hr>
 
+                <div class="summary-row total">
+                    <span>Tổng cộng:</span>
+                    <span style=" color: rgb(184, 41, 41);"><?php echo number_format($totalMoney, 0, ',', '.'); ?> đ</span>
+                </div>
+
+                <button type="submit" name="checkout" formaction="../checkout.php" class="checkout-btn" id="btn-buy-now">Đặt hàng</button>
+            </div>
+        </div>
     </div>
+</form>
+<script>
+    document.getElementById('cartForm').addEventListener('submit', function(e) {
+    const selected = document.querySelector('input[name="product_id"]:checked');
 
-    <!-- RIGHT -->
-    <div class="cart-right">
-        <div class="cart-summary">
-            <h1>Kết quả đơn hàng</h1>
+    if (!selected) {
+        alert('Vui lòng chọn sản phẩm');
+        e.preventDefault();
+        return;
+    }
 
-            <div class="summary-row">
-                <span>Tổng sản phẩm:</span>
-                <span><?php echo $totalQuantity; ?></span>
-            </div>
+    const item = selected.closest('.cart-item');
+    const qty = item.querySelector('.cart-quantity span').innerText;
 
-            <hr>
+    let input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = 'quantity';
+    input.value = qty;
 
-            <div class="summary-row total">
-                <span>Tổng cộng:</span>
-                <span style=" color: rgb(184, 41, 41);"><?php echo number_format($totalMoney, 0, ',', '.'); ?> đ</span>
-            </div>
-
-            <button class="checkout-btn">Đặt hàng</button>
-        </div>
-</div>
-
-</div>
-
+    this.appendChild(input);
+});
+</script>
 <?php echo $layout->getFooter(); ?>
-
 </body>
 </html>

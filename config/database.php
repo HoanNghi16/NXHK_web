@@ -1,9 +1,13 @@
 <?php
 
-    $host = "sql211.iceiy.com";
-    $user = "icei_41428851";
-    $password = "vyYwneBg4sUu";
-    $database = "icei_41428851_nxhk_web_db";
+    $host = "localhost";
+    $user = "root";
+    $password = "";
+    $database = 'nxhk_web_db';
+    // $host = "sql211.iceiy.com";
+    // $user = "icei_41428851";
+    // $password = "vyYwneBg4sUu";
+    // $database = "icei_41428851_nxhk_web_db";
 
     $conn = new mysqli($host, $user, $password, $database);
     if ($conn->connect_error) {
