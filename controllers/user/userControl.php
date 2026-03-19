@@ -63,6 +63,10 @@
             $toast = new ToastController();
             $result = $userService->login($email, $password);
             if ($result === true){
+                if ($_SESSION['user_role'] === "admin"){
+                    header("Location: ../admin/index.php");
+                    return;
+                }
                 $toast->showToast("Đăng nhập thành công", "success", 3000);
                 header("Location: ../home.php");
                 exit();

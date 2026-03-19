@@ -11,6 +11,9 @@ class CartService
     {
         $sql="SELECT od_quantity FROM cart_details WHERE user_id=? AND product_id=?";
         $stmt=$this->conn->prepare($sql);
+        if (!$stmt){
+            die($this->conn->error);
+        }
         $stmt->bind_param("si", $user_id, $product_id);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -42,6 +45,50 @@ class CartService
 
     }
 
+
+    public function changeCartQuantity($quantity, $product_id){
+        $id = $_SESSION['user_id'];
+        if (!$id){
+            return "Vui lòng đăng nhập";
+        }
+        $sql = "UPDATE CART_DETAILS 
+                SET OD_QUANTITY = ? 
+                WHERE PRODUCT_ID = ? AND USER_ID = ?";
+
+        $stmt = $this->conn->prepare($sql);
+
+        if (!$stmt){
+            die($this->conn->error);
+        }
+        $stmt->bind_param("iii", $quantity, $product_id, $id);
+        if ($stmt->execute()){
+            if ($stmt->affected_rows > 0){
+                return true;
+            } else {
+                return "Không tìm thấy sản phẩm trong giỏ";
+            }
+        }
+        return "Lỗi khi cập nhật";
+    }
+
+    public function deleteCartDetail($product_id){
+        $id = $_SESSION['user_id'];
+        if (!$id){
+            return "Vui lòng đăng nhập!";
+        }
+
+        $sql = "DELETE FROM CART_DETAILS WHERE PRODUCT_ID = ? AND USER_ID = ? ";
+        $stmt = $this->conn->prepare($sql);
+        if (!$stmt){
+            die($this->conn->error);
+        }
+        $stmt->bind_param('is', $product_id, $id);
+        if ($stmt->execute()){
+            return true;
+        }else{
+            return "Xóa sản phẩm thất bại";
+        }
+    }
 
     public function getCartByUser($user_id)
         {
