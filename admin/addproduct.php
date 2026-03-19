@@ -53,7 +53,7 @@ for ($i = 0; $i < $countfiles; $i++) {
             echo "đã upload";
             $is_thumb = ($i == 0) ? 1 : 0;
             $sql_img = "INSERT INTO product_images (product_id ,path, is_thumbnail)
-                        VALUES ('".$new_id."','/NXHK_web/img/product/".$cate_name."/". $new_id ."/".$filename."', ".$is_thumb.");";
+                        VALUES ('".$new_id."','/nxhk_web/img/product/".$cate_name."/". $new_id ."/".$filename."', ".$is_thumb.");";
             mysqli_query($conn, $sql_img);
         }
     }

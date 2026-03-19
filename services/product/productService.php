@@ -70,7 +70,7 @@ class ProductService
             if (isset($product['specifications'])) {
                 $product['specs'] = json_decode($product['specifications'], true);
             }
-            $stmt->prepare("SELECT * FROM PRODUCT_IMAGES WHERE PRODUCT_ID = ?");
+            $stmt->prepare("SELECT * FROM product_images WHERE product_id = ?");
             $stmt->bind_param('s', $product['product_id']);
             if($stmt->execute()){
                 $result = $stmt->get_result();
@@ -88,11 +88,11 @@ class ProductService
     }
 
     public function fetchProductWithCondition($cate, $price, $sort, $page){
-        $sql = "SELECT P.product_id, product_name, price, path FROM PRODUCT P 
-        JOIN CATEGORIES C ON P.CATEGORY_ID = C.CATEGORY_ID 
-        JOIN PRODUCT_IMAGES P_I ON P.PRODUCT_ID = P_I.PRODUCT_ID";
-        $pageSql = "SELECT COUNT(*) as total FROM PRODUCT P JOIN CATEGORIES C ON P.CATEGORY_ID = C.CATEGORY_ID JOIN PRODUCT_IMAGES P_I ON P.PRODUCT_ID = P_I.PRODUCT_ID ";
-        $condition = " WHERE P_I.IS_THUMBNAIL = 1 AND P.quantity > 0";
+        $sql = "SELECT P.product_id, product_name, price, path FROM product P 
+        JOIN categories C ON P.category_id = C.category_id
+        JOIN product_images P_I ON P.product_id = P_I.product_id";
+        $pageSql = "SELECT COUNT(*) as total FROM product P JOIN categories C ON P.category_id = C.category_id JOIN product_images P_I ON P.product_id = P_I.product_id ";
+        $condition = " WHERE P_I.is_thumbnail = 1 AND P.quantity > 0";
         if ($cate) {
             $condition .= " AND category_name = '".$cate."' ";
         }
@@ -118,9 +118,13 @@ class ProductService
             }else if ($sort == "down"){
                 $condition .= " ORDER BY price DESC ";
             }
+            else if ($sort == "new"){
+                $condition.=" ORDER BY release_year DESC ";
+            }
         }
-        $offset = ($page - 1) * 12;
-        $sql .= $condition . " LIMIT 12 OFFSET ".$offset;
+        $offset = ($page == 0)? 4:($page - 1) * 12;
+        $limit = $page==0? 4: 12;
+        $sql .= $condition . " LIMIT ".$limit." OFFSET ".$offset;
         $stmt = $this->conn->prepare($sql);
         if(!$stmt){
             die("SQL Error: " . $this->conn->error.$sql);

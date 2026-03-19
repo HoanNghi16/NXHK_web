@@ -93,7 +93,7 @@ class MailService{
                 $paymentText = 'Không xác định';
             }
 
-            $orderLink = "http://localhost/NXHK_web/order_status.php?order_id=" . $order['order_code'];
+            $orderLink = "https://neotech.iceiy.com/nxhk_web/order_status.php?order_id=" . $order['order_code'];
 
             $mail->Body = "
                 <h2>Cảm ơn bạn đã đặt hàng tại NeoTech Store</h2>

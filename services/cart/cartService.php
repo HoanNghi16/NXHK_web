@@ -52,7 +52,7 @@ class CartService
             return "Vui lòng đăng nhập";
         }
 
-        $checkQuant_SQL = "SELECT QUANTITY FROM PRODUCT WHERE PRODUCT_ID = ? AND QUANTITY >=?";
+        $checkQuant_SQL = "SELECT quantity FROM product WHERE product_id = ? AND quantity >=?";
         $stmt = $this->conn->prepare($checkQuant_SQL);
         $stmt->bind_param('ii', $product_id, $quantity);
         if ($stmt->execute()){
@@ -62,9 +62,9 @@ class CartService
             }
         }
 
-        $sql = "UPDATE CART_DETAILS 
-                SET OD_QUANTITY = ? 
-                WHERE PRODUCT_ID = ? AND USER_ID = ?";
+        $sql = "UPDATE cart_details 
+                SET od_quantity = ? 
+                WHERE product_id = ? AND user_id = ?";
 
         $stmt = $this->conn->prepare($sql);
 
@@ -88,7 +88,7 @@ class CartService
             return "Vui lòng đăng nhập!";
         }
 
-        $sql = "DELETE FROM CART_DETAILS WHERE PRODUCT_ID = ? AND USER_ID = ? ";
+        $sql = "DELETE FROM cart_details WHERE product_id = ? AND user_id = ? ";
         $stmt = $this->conn->prepare($sql);
         if (!$stmt){
             die($this->conn->error);

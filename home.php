@@ -1,7 +1,9 @@
 <?php
     session_start();
     include('layout/layout.php');
+    include('./controllers/product/productControl.php');
     $layout = new Layout();
+    $productControl = new productControl();
     $header = $layout->getHeader();
     $footer = $layout->getFooter();
 ?>
@@ -49,48 +51,18 @@
       </section>
       <section class="products">
 
-        <h2>Sản phẩm nổi bật</h2>
+        <h2>Sản ra mắt năm 2026</h2>
+        <a class="seeAll" href="./product/products.php" style="color: white; text-decoration: none; position: relative; right: 0; left: 93%; bottom: 20px;">Xem tất cả</a>
 
+
+        
         <div class="product-home-grid">
 
-          <div class="product-card">
-            <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8">
-            <h3>Macbook Pro M3</h3>
-            <p class="price">42.000.000đ</p>
-            <button>Mua ngay</button>
-          </div>
-
-          <div class="product-card">
-            <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9">
-            <h3>iPhone 15 Pro</h3>
-            <p class="price">29.000.000đ</p>
-            <button>Mua ngay</button>
-          </div>
-
-          <div class="product-card">
-            <img src="https://images.unsplash.com/photo-1587202372775-989f1d1e5b9e">
-            <h3>Gaming Mouse</h3>
-            <p class="price">1.200.000đ</p>
-            <button>Mua ngay</button>
-          </div>
-
-          <div class="product-card">
-            <img src="https://images.unsplash.com/photo-1580910051074-3eb694886505">
-            <h3>Airpods Pro</h3>
-            <p class="price">6.500.000đ</p>
-            <button>Mua ngay</button>
-          </div>
+            <?php
+              $productControl->fetchProducts(null, null, "new", 0, "./product");
+            ?>
 
         </div>
-
-      </section>
-      <section class="promo">
-
-        <h2>Giảm giá đến 40%</h2>
-
-        <p>Dành cho tất cả thiết bị gaming</p>
-
-        <button>Xem ngay</button>
 
       </section>
       <?php

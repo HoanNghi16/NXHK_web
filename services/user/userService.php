@@ -62,7 +62,7 @@
             return false;
         }
         public function forgetPassword($email){
-            $stmt = $this->conn->prepare("SELECT EMAIL FROM USER WHERE EMAIL ='".$email."'");
+            $stmt = $this->conn->prepare("SELECT email FROM user WHERE email ='".$email."'");
             if($stmt->execute()){
                 return $stmt->get_result()->fetch_assoc();
             }
@@ -71,7 +71,7 @@
                 $email = $_SESSION['forget_email'];
                 $password = $_SESSION['forget_password'];
                 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-                $sql = 'UPDATE USER SET PASSWORD = ? WHERE EMAIL = ? ';
+                $sql = 'UPDATE user SET password = ? WHERE email = ? ';
                 $stmt = $this->conn->prepare($sql);
                 if (!$stmt) {
                     die("SQL Error: " . $this->conn->error);
@@ -180,7 +180,7 @@
                 die('Lỗi!!!!!');
             }
             if ($new_email){
-                $sql = "SELECT * FROM user WHERE EMAIL ='".$new_email."' AND NOT id  = '".$id."'";
+                $sql = "SELECT * FROM user WHERE email ='".$new_email."' AND NOT id  = '".$id."'";
                 $stmt = $this->conn->prepare($sql);
                 if(!$stmt){
                     die($this->conn->error);
@@ -194,7 +194,7 @@
                 if ($checkMail->num_rows > 0){
                     return "Email đã tồn tại";
                 }else{
-                    $sql = "UPDATE USER SET EMAIL = '".$new_email."' WHERE ID ='".$id."'";
+                    $sql = "UPDATE user SET email = '".$new_email."' WHERE id ='".$id."'";
                     $stmt = $this->conn->prepare($sql);
                     if (!$stmt->execute()){
                         return $stmt->error;
@@ -203,7 +203,7 @@
                 
             }
             if ($new_name){
-                $sql = "UPDATE user SET NAME = '".$new_name."' WHERE id ='".$id."'";
+                $sql = "UPDATE user SET name = '".$new_name."' WHERE id ='".$id."'";
                 $stmt = $this->conn->prepare($sql);
                 if (!$stmt){
                     die($stmt->error);

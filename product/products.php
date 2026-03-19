@@ -72,13 +72,13 @@
                                 <option value="">Sắp xếp</option>
                                 <option value="up">Giá thấp → cao</option>
                                 <option value="down">Giá cao → thấp</option>
-                                <option>Mới nhất</option>
+                                <option value="new">Mới nhất</option>
                             </select>
                         </div>
 
                         <div class="productGrid">
                             <?php
-                                $total_pages = $productControl->fetchProducts($_GET['cate'] ?? "", $_GET['price'] ?? "", $_GET['sort'] ?? "", $_GET['page'] ?? 1) ?? 1;
+                                $total_pages = $productControl->fetchProducts($_GET['cate'] ?? "", $_GET['price'] ?? "", $_GET['sort'] ?? "", $_GET['page'] ?? 1, ".");
                             ?>
                         </div>
 
