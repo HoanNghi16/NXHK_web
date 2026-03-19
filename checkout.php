@@ -10,7 +10,25 @@ $productService = new ProductService($GLOBALS['conn']);
 $result = $productService->getProductById($id);
 $product = $result['product'] ?? null;
 
-if (!$product) { die("Sản phẩm không tồn tại."); }
+if (!$product) 
+{ 
+    die("Sản phẩm không tồn tại."); 
+}
+
+$images = $result['images'] ?? [];
+$thumbnail = '';
+
+foreach ($images as $img) {
+    if ($img['is_thumbnail'] == 1) {
+        $thumbnail = $img['path'];
+        break;
+    }
+}
+
+if (!$thumbnail && !empty($images)) {
+    $thumbnail = $images[0]['path'];
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -19,141 +37,7 @@ if (!$product) { die("Sản phẩm không tồn tại."); }
 <head>
     <meta charset="UTF-8">
     <title>Thanh toán - <?php echo $product['product_name']; ?></title>
-    <style>
-    body {
-        margin: 0;
-        padding: 0;
-        background-color: #f5f5f5;
-        font-family: sans-serif;
-    }
-
-    .container {
-        max-width: 1100px;
-        margin: 30px auto;
-        padding: 0 15px;
-    }
-
-    .checkout-main {
-        display: flex;
-        gap: 30px;
-        margin-bottom: 30px;
-    }
-
-    .left-col {
-        flex: 1.5;
-        background: #fff;
-        padding: 25px;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    }
-
-    .right-col {
-        flex: 1;
-        background: #fff;
-        padding: 25px;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        border: 1px solid #eee;
-    }
-
-    h2 {
-        font-size: 20px;
-        margin-top: 0;
-        border-bottom: 1px solid #eee;
-        padding-bottom: 10px;
-    }
-
-    .form-group {
-        margin-bottom: 15px;
-    }
-
-    .form-group label {
-        display: block;
-        margin-bottom: 5px;
-        font-weight: bold;
-    }
-
-    .form-group input,
-    .form-group textarea {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        box-sizing: border-box;
-    }
-
-    .summary-item {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 10px;
-    }
-
-    .total-price {
-        color: #d32f2f;
-        font-size: 24px;
-        font-weight: bold;
-    }
-
-    .quantity-control {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin: 15px 0;
-    }
-
-    .quantity-control button {
-        width: 30px;
-        height: 30px;
-        cursor: pointer;
-        border: 1px solid #ddd;
-        background: #fff;
-    }
-
-    .btn-pay {
-        width: 100%;
-        background: #007bff;
-        color: #fff;
-        border: none;
-        padding: 15px;
-        font-size: 18px;
-        font-weight: bold;
-        cursor: pointer;
-        border-radius: 5px;
-        margin-top: 20px;
-    }
-
-    .btn-pay:hover {
-        background: #0056b3;
-    }
-
-    .order-details-table {
-        width: 100%;
-        background: #fff;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        box-sizing: border-box;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 15px;
-    }
-
-    table th {
-        background: #f8f8f8;
-        padding: 12px;
-        text-align: left;
-        border-bottom: 2px solid #eee;
-    }
-
-    table td {
-        padding: 12px;
-        border-bottom: 1px solid #eee;
-        vertical-align: middle;
-    }
-    </style>
+    <link rel="stylesheet" href="../NXHK_web/style/checkout.css">
 </head>
 
 <body>
@@ -244,8 +128,8 @@ if (!$product) { die("Sản phẩm không tồn tại."); }
                     <tbody>
                         <tr>
                             <td style="width: 120px;">
-                                <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8"
-                                    style="width: 100%; height: auto; object-fit: cover; border-radius: 6px;">
+                                <img src="<?php echo $thumbnail; ?>"
+                                style="width: 100%; height: auto; object-fit: cover; border-radius: 6px;">
                             </td>
                             <td><?php echo $product['product_name']; ?></td>
                             <td><?php echo number_format($product['price'], 0, ',', '.'); ?>VNĐ</td>

@@ -47,8 +47,6 @@ if ($payDateRaw) {
 }
 
 if ($isSuccess) {
-    $order_code = $_GET['vnp_TxnRef'];
-    $amount = $_GET['vnp_Amount'] / 100;
 
     $sql = "UPDATE orders 
             SET status = 2, 
@@ -60,6 +58,26 @@ if ($isSuccess) {
     $stmt->bind_param("ds", $amount, $order_code);
     $stmt->execute();
 
+    require_once __DIR__ . '/../services/mail/mailService.php';
+    $mailService = new MailService();
+
+    $stmt2 = $conn->prepare("SELECT * FROM orders WHERE order_code = ?");
+    $stmt2->bind_param("s", $order_code);
+    $stmt2->execute();
+    $result = $stmt2->get_result();
+    $order = $result->fetch_assoc();
+
+    if (!$order) {
+        die("Không tìm thấy đơn hàng");
+    }
+
+    if ($order['is_emailed'] == 0) {
+        if ($mailService->sendOrderMail($order)) {
+            $update = $conn->prepare("UPDATE orders SET is_emailed = 1 WHERE order_code = ?");
+            $update->bind_param("s", $order_code);
+            $update->execute();
+        }
+    }
     header("Location: ../order_status.php?order_id=$order_code&method=vnpay");
     exit;
 }
@@ -128,11 +146,6 @@ if ($isSuccess) {
     </div>
 
     <script>
-    <?php if ($isSuccess): ?>
-    setTimeout(function() {
-        window.location.href = "../order_status.php?order_id=<?php echo $order_code; ?>&method=vnpay";
-    }, 3000);
-    <?php endif; ?>
     </script>
 
     <?php echo $layout->getFooter(); ?>
