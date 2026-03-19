@@ -26,6 +26,7 @@ if (isset($_POST['increase']) || isset($_POST['decrease'])){
 }
 
 $result = $cartService->getCartByUser($user_id);
+
 ?>
 
 <!DOCTYPE html>
@@ -45,10 +46,6 @@ $result = $cartService->getCartByUser($user_id);
     <!-- LEFT -->
     <div class="cart-left">
         <h2>Giỏ hàng của bạn</h2>
-
-        <div class="cart-select-all">
-            <input type="checkbox"> Chọn tất cả
-        </div>
 
         <?php
         $totalMoney = 0;
@@ -120,7 +117,7 @@ $result = $cartService->getCartByUser($user_id);
                 <span style=" color: rgb(184, 41, 41);"><?php echo number_format($totalMoney, 0, ',', '.'); ?> đ</span>
             </div>
 
-            <button class="checkout-btn">Đặt hàng</button>
+            <a href="../checkout.php"><button class="checkout-btn">Đặt hàng</button></a>
         </div>
 </div>
 
