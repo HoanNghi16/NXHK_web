@@ -5,10 +5,35 @@ require_once __DIR__ . "/services/product/productService.php";
 require_once __DIR__ . "/layout/layout.php"; 
 
 $layout = new Layout();
-$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 $productService = new ProductService($GLOBALS['conn']);
-$result = $productService->getProductById($id);
-$product = $result['product'] ?? null;
+
+if (isset($_GET['id'])) {
+
+    $id = intval($_GET['id']);
+    $quantity = 1;
+
+    $result = $productService->getProductById($id);
+    $product = $result['product'] ?? null;
+
+    if (!$product) {
+        die("Sản phẩm không tồn tại");
+    }
+
+} elseif (isset($_POST['product_id'])) {
+
+    $id = intval($_POST['product_id']);
+    $quantity = intval($_POST['quantity'] ?? 1);
+
+    $result = $productService->getProductById($id);
+    $product = $result['product'] ?? null;
+
+    if (!$product) {
+        die("Sản phẩm không tồn tại");
+    }       
+
+} else {
+    die("Không có sản phẩm để thanh toán");
+}
 
 if (!$product) 
 { 
@@ -28,6 +53,7 @@ foreach ($images as $img) {
 if (!$thumbnail && !empty($images)) {
     $thumbnail = $images[0]['path'];
 }
+$total = $product['price'] * $quantity;
 
 ?>
 
@@ -38,6 +64,7 @@ if (!$thumbnail && !empty($images)) {
     <meta charset="UTF-8">
     <title>Thanh toán - <?php echo $product['product_name']; ?></title>
     <link rel="stylesheet" href="../NXHK_web/style/checkout.css">
+    <script src="../NXHK_web/js/checkout.js"></script>
 </head>
 
 <body>
@@ -85,14 +112,15 @@ if (!$thumbnail && !empty($images)) {
                     <div class="quantity-control">
                         <span>Số lượng:</span>
                         <button type="button" onclick="updateQty(-1)">-</button>
-                        <input type="number" id="display-qty" value="1" readonly
+                        <input type="number" id="display-qty" value="<?php echo $quantity; ?>" readonly
                             style="width: 40px; text-align: center; border:none;">
                         <button type="button" onclick="updateQty(1)">+</button>
                     </div>
-                    <div class="summary-item" style="border-top: 1px dashed #ccc; padding-top: 15px;">
+                    <div class="summary-item" style="font-weight:bold; color:#d32f2f;">
                         <span>Tổng thanh toán:</span>
-                        <span class="total-price"
-                            id="total-display"><?php echo number_format($product['price'], 0, ',', '.'); ?>đ</span>
+                        <span id="total-display">
+                            <?php echo number_format($total, 0, ',', '.'); ?>đ
+                        </span>
                     </div>
 
                     <div style="margin-top: 20px;">
@@ -106,8 +134,9 @@ if (!$thumbnail && !empty($images)) {
 
                     <input type="hidden" name="product_id" value="<?php echo $product['product_id']; ?>">
                     <input type="hidden" name="order_desc" value="<?php echo $product['product_name']; ?>">
-                    <input type="hidden" name="amount" id="form-amount" value="<?php echo $product['price']; ?>">
-                    <input type="hidden" name="quantity" id="form-qty" value="1">
+                    <input type="hidden" name="amount" id="form-amount" value="<?php echo $total; ?>">
+                    <input type="hidden" name="quantity" id="form-qty" value="<?php echo $quantity; ?>">
+                    <input type="hidden" id="unit-price" value="<?php echo (int)$product['price']; ?>">
 
                     <button type="submit" id="submitBtn" class="btn-pay">ĐẶT HÀNG</button>
                 </div>
@@ -133,9 +162,9 @@ if (!$thumbnail && !empty($images)) {
                             </td>
                             <td><?php echo $product['product_name']; ?></td>
                             <td><?php echo number_format($product['price'], 0, ',', '.'); ?>VNĐ</td>
-                            <td id="table-qty">1</td>
+                            <td id="table-qty" style="font-weight:bold; color:#d32f2f;"><?php echo $quantity; ?></td>
                             <td id="table-total" style="font-weight:bold; color:#d32f2f;">
-                                <?php echo number_format($product['price'], 0, ',', '.'); ?>VNĐ
+                                <?php echo number_format($total, 0, ',', '.'); ?>VNĐ
                             </td>
                         </tr>
                     </tbody>
@@ -143,76 +172,6 @@ if (!$thumbnail && !empty($images)) {
             </div>
         </form>
     </div>
-
-    <script>
-    document.addEventListener("DOMContentLoaded", function() {
-
-        const unitPrice = <?php echo $product['price']; ?>;
-
-        window.updateQty = function(change) {
-            let qty = parseInt(document.getElementById('display-qty').value) + change;
-            if (qty < 1) qty = 1;
-
-            const total = qty * unitPrice;
-            const totalFormatted = total.toLocaleString('vi-VN') + 'đ';
-
-            document.getElementById('display-qty').value = qty;
-            document.getElementById('total-display').innerText = totalFormatted;
-
-            const tableQty = document.getElementById('table-qty');
-            const tableTotal = document.getElementById('table-total');
-            if (tableQty) tableQty.innerText = qty;
-            if (tableTotal) tableTotal.innerText = totalFormatted;
-
-            document.getElementById('form-qty').value = qty;
-            document.getElementById('form-amount').value = total;
-        }
-
-        const nameInput = document.querySelector('[name="customer_name"]');
-        const emailInput = document.querySelector('[name="customer_email"]');
-        const phoneInput = document.querySelector('[name="customer_phone"]');
-        const addressInput = document.querySelector('[name="customer_address"]');
-        const btn = document.getElementById('submitBtn');
-        const form = document.getElementById('checkoutForm');
-
-        function checkForm() {
-            if (
-                nameInput.value.trim() &&
-                emailInput.value.trim() &&
-                phoneInput.value.trim() &&
-                addressInput.value.trim()
-            ) {
-                btn.disabled = false;
-                btn.style.opacity = "1";
-            } else {
-                btn.disabled = true;
-                btn.style.opacity = "0.5";
-            }
-        }
-
-        [nameInput, emailInput, phoneInput, addressInput].forEach(input => {
-            input.addEventListener("input", checkForm);
-        });
-
-        form.addEventListener("submit", function(e) {
-            if (!form.checkValidity()) {
-                form.reportValidity();
-                e.preventDefault();
-                return;
-            }
-
-            const method = document.querySelector('input[name="payment_choice"]:checked').value;
-
-            if (method === 'cod') {
-                form.action = "create_order.php";
-            } else {
-                form.action = "vnpay_php/vnpay_create_payment.php";
-            }
-        });
-
-    });
-    </script>
-
     <?php echo $layout->getFooter(); ?>
 </body>
 

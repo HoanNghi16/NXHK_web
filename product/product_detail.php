@@ -48,9 +48,9 @@
         echo $layout->getHeader();
     ?>
     <div class="ProductNav">
-        <a href="../home.php">Trang chủ</a> /
-        <a href="./products.php">Sản phẩm</a> /
-        <a href="./products.php?cate=<?php echo $product['category_name']; ?>">
+        <a href="../home.php" class="productLink">Trang chủ</a> /
+        <a href="./products.php" class="productLink">Sản phẩm</a> /
+        <a href="./products.php?cate=<?php echo $product['category_name']; ?>" class="productLink">
             <?php echo $product['category_name']; ?>
         </a> /
 
@@ -83,9 +83,11 @@
                     ? number_format($product['price'], 0, ',', '.') . ' VNĐ'
                     : '0 đ'; ?>
                 </div>
-                <?php
-                    echo '<p class="productDescription">'.$product['description'].'</p>';
-                ?>
+                <div class="product-description">
+                    <?php
+                        echo '<p class="productDescription">'.$product['description'].'</p>';
+                    ?>
+                </div>
                 <div class="product-button">
 
                     <!-- Thêm vào giỏ -->
@@ -102,7 +104,9 @@
                     <!-- Mua ngay -->
                     <form action="../checkout.php" method="GET">
                         <input type="hidden" name="id" value="<?php echo $product['product_id']; ?>">
-                        <button type="submit">Mua ngay</button>
+                        <button type="submit" id="btn-buy-now">
+                            Mua ngay
+                        </button>
                     </form>
 
                 </div>
@@ -111,7 +115,7 @@
         </div>
         <hr>
         <div class="ProductDescription">
-            <h1 style="margin-left: 20px;">Thông số kỹ thuật</h1>
+            <h1 style="margin-left: 20px; color:white">Thông số kỹ thuật</h1>
             <br>
 
             <?php
