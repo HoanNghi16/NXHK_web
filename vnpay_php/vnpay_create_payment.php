@@ -42,6 +42,9 @@ $stmt = $conn->prepare("
         status, created_at, payment_method, is_emailed
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), 'vnpay', 0)
 ");
+if (!$stmt){
+    die ($conn->error);
+}
 $status = 1;
 $stmt->bind_param(
     "ssissssssi",

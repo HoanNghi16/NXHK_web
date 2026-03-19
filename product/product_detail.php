@@ -102,9 +102,9 @@
                     </form>
 
                     <!-- Mua ngay -->
-                    <form action="../checkout.php" method="GET">
+                    <form action="../checkout.php" method="GET" style="max-width: 50%; margin:0 10px; float: left;">
                         <input type="hidden" name="id" value="<?php echo $product['product_id']; ?>">
-                        <button type="submit">Mua ngay</button>
+                        <button type="submit" id="btn-buy-now">Mua ngay</button>
                     </form>
 
                 </div>

@@ -25,7 +25,7 @@ span {
   margin-left: 5px;
 }
 
-.ProductNav a:hover {
+.ProductNav .productLink:hover {
   color: #7348d7;
 }
 .product-description {
@@ -41,13 +41,14 @@ span {
 }
 /* ===== CONTAINER ===== */
 .PDetailContainer {
-  width: 100%;
+  width: 90%;
   padding-top: 20px;
-  padding: 25px 120px;
+  padding: 25px 60px;
   /* background-color: #1d1229; */
   /* background: linear-gradient(120deg, #e0e7ff, #fdf2f8, #ecfeff);
   color: #111827; */
-  background-image: linear-gradient(135deg, #331d4e, #0f2c6d);
+  /* background-color: rgb(18, 11, 33); */
+  background-color: white;
   color: #4b4a4a;
 }
 
@@ -59,7 +60,8 @@ span {
   border-radius: 15px;
   border: 1px solid #e5e7eb;
   background: white;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 12px rgba(235, 231, 238, 0.08);
+  background-color: #d6d6e1;
 }
 
 .previewList {
@@ -105,7 +107,7 @@ span {
   margin-left: 60px;
   font-family: "Roboto Slab", serif;
   font-size: 30px;
-  color: #ebe8f4;
+  color: #191b6e;
   text-shadow:
     0 2px 4px rgba(0, 0, 0, 0.5),
     0 0 8px rgba(59, 130, 246, 0.3);
@@ -113,7 +115,7 @@ span {
 
 .product-price {
   font-size: 25px;
-  color: #e43030;
+  color: #bb2e0a;
   font-weight: 700;
   margin-left: 60px;
   margin-top: 20px;

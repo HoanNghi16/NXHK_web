@@ -17,7 +17,7 @@
 .cart-left {
   flex: 7;
   border-radius: 12px;
-  padding-left: 25px;
+  padding: 30px;
   background-color: rgb(219, 233, 239);
 }
 

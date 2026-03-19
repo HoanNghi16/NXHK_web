@@ -90,9 +90,9 @@
 
         <h2>Giảng viên hướng dẫn</h2>
 
-        <div class="teacher-card">
+        <div class="teacher-card" style=" text-align: center;color: white; background:rgba(255,255,255,0.08); backdrop-filter:blur(10px);padding:25px;text-align:center;transition:0.3s;border:1px solid rgba(255,255,255,0.1); border-radius: 10px;">
 
-            <img src="../img/teacher.jpg" class="avatar">
+            <img src="https://res.cloudinary.com/dewy9gtgw/image/upload/v1773907280/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-03-19_150050_qpi9cb.png" class="avatar" style="max-width: 200px; aspect-ratio: 1/1; object-fit: cover;">
 
             <h3>Võ Ngọc Tấn Phước</h3>
 

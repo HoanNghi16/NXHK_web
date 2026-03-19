@@ -45,11 +45,6 @@ $result = $cartService->getCartByUser($user_id);
     <!-- LEFT -->
     <div class="cart-left">
         <h2>Giỏ hàng của bạn</h2>
-
-        <div class="cart-select-all">
-            <input type="checkbox"> Chọn tất cả
-        </div>
-
         <?php
         $totalMoney = 0;
         $totalQuantity = 0;
