@@ -83,9 +83,11 @@
                     ? number_format($product['price'], 0, ',', '.') . ' VNĐ'
                     : '0 đ'; ?>
                 </div>
-                <?php
-                    echo '<p class="productDescription">'.$product['description'].'</p>';
-                ?>
+                <div class="product-description">
+                    <?php
+                        echo '<p class="productDescription">'.$product['description'].'</p>';
+                    ?>
+                </div>
                 <div class="product-button">
 
                     <!-- Thêm vào giỏ -->
@@ -114,7 +116,7 @@
         </div>
         <hr>
         <div class="ProductDescription">
-            <h1 style="margin-left: 20px;">Thông số kỹ thuật</h1>
+            <h1 style="margin-left: 20px; color:white">Thông số kỹ thuật</h1>
             <br>
 
             <?php
