@@ -10,6 +10,7 @@ $specifications = $_POST['specifications'];
 $price= $_POST['price'];
 $quantity=$_POST['quantity'];
 $danhmuc = $_POST['danhmuc'];
+$release_year = $_POST['release_year'];
 
 //insert dl
 
@@ -30,8 +31,8 @@ $cate_name = mysqli_fetch_assoc($cate_result)['category_name'];
 echo $new_id;
 echo $cate_name;
 
-$sql="INSERT INTO product (`product_id`, `category_id`, `product_name`, `price`, `description`, `specifications`, `quantity`) 
-VALUES ('".$new_id."','".$danhmuc."','".$name."','".$price."','".$description."','".$specifications."','".$quantity."');";
+$sql="INSERT INTO product (`product_id`, `category_id`, `product_name`, `price`, `description`, `specifications`, `quantity`, `release_year`) 
+VALUES ('".$new_id."','".$danhmuc."','".$name."','".$price."','".$description."','".$specifications."','".$quantity."',".$release_year.");";
 $result = mysqli_query($conn, $sql);
  
  // xử lý ảnh

@@ -45,7 +45,10 @@ require('./includes/header.php');
             <?php } ?>
         </select>
     </div>
-
+    <div class="forom-group mb-3">
+        <label class="form-label">Năm ra mắt:</label>
+        <input type="text" name="release_year" class="form-control" placeholder="Nhập năm ra mắt sản phẩm"/>
+    </div>
     <!-- Số lượng + giá -->
     <div class="form-group row mb-3">
         <div class="col-sm-6">
@@ -63,15 +66,17 @@ require('./includes/header.php');
     </div>
 
     <div class="form-group mb-3">
-    <label class="form-label">Thông số kỹ thuật:</label>
-    <textarea name="specifications" class="form-control" placeholder="Nhập thông số kỹ thuật"></textarea>
-</div>
+        <label class="form-label">Thông số kỹ thuật:</label>
+        <textarea name="specifications" class="form-control" placeholder="Nhập thông số kỹ thuật"></textarea>
+    </div>
+
 
     <!-- Ảnh -->
     <div class="form-group mb-3">
         <label>Ảnh sản phẩm:</label>
         <input type="file" id="anhs" name="anhs[]" multiple class="form-control">
     </div>
+
 
     <!-- Button -->
     <div class="text-center mt-4">

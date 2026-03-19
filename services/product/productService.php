@@ -122,7 +122,7 @@ class ProductService
                 $condition.=" ORDER BY release_year DESC ";
             }
         }
-        $offset = ($page == 0)? 4:($page - 1) * 12;
+        $offset = $page==0? 0: ($page - 1) * 12;
         $limit = $page==0? 4: 12;
         $sql .= $condition . " LIMIT ".$limit." OFFSET ".$offset;
         $stmt = $this->conn->prepare($sql);
