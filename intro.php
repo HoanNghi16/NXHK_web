@@ -58,25 +58,25 @@
         <div class="team-grid">
 
             <div class="member-card">
-                <img src="../img/nghi.jpg" class="avatar">
+                <img src="https://res.cloudinary.com/dewy9gtgw/image/upload/v1773903443/z7636196635114_77d1ada68e4387a0c38ba2d2c2362802_rtsue3.jpg" class="avatar" style="max-width: 150px; aspect-ratio: 1/1; object-fit: cover;">
                 <h3>Nguyễn Dương Hoàng Nghi</h3>
                 <p>hoangnghinguyen17@gmail.com</p>
             </div>
 
             <div class="member-card">
-                <img src="../img/hong.jpg" class="avatar">
+                <img src="https://res.cloudinary.com/dewy9gtgw/image/upload/v1773902680/hong_uowtsk.jpg" style="max-width: 150px; aspect-ratio: 1/1; object-fit: cover;" class="avatar">
                 <h3>Nguyễn Thị Hồng</h3>
                 <p>hazelpnk55@gmail.com</p>
             </div>
 
             <div class="member-card">
-                <img src="../img/xuyen.jpg" class="avatar">
+                <img src="https://res.cloudinary.com/dewy9gtgw/image/upload/v1773902938/z7636154102876_e0aee1e594fbcf3df1643d563d173bfb_xoclgz.jpg" class="avatar" style="max-width: 150px; aspect-ratio: 1/1; object-fit: cover;">
                 <h3>Võ Thị Mỹ Xuyến</h3>
                 <p>myxuyenvo31@gmail.com</p>
             </div>
 
             <div class="member-card">
-                <img src="../img/khanh.jpg" class="avatar">
+                <img src="https://res.cloudinary.com/dewy9gtgw/image/upload/v1773903300/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2026-03-19_135426_yiq208.png" class="avatar" style="max-width: 150px; aspect-ratio: 1/1; object-fit: cover;">
                 <h3>Trần Quốc Khánh</h3>
                 <p>yasuokhanh16@gmail.com</p>
             </div>

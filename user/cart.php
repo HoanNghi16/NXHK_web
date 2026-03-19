@@ -79,9 +79,9 @@ $result = $cartService->getCartByUser($user_id);
                 <form method="POST" name="quantity">
                     <input hidden name="product_id" value=<?php echo "'".$row['product_id']."'"?>/>
                     <input hidden name="od_quantity" value=<?php echo "'".$row['od_quantity']."'"?>/>
-                    <button name="decrease" value="decrease">-</button>
+                    <button name="decrease" value="decrease" class="quantityBtn">-</button>
                     <span><?php echo $row['od_quantity']; ?></span>
-                    <button name="increase" value="increase">+</button>
+                    <button name="increase" value="increase" class="quantityBtn">+</button>
                 </form>
             </div>
 

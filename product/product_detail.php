@@ -48,9 +48,9 @@
         echo $layout->getHeader();
     ?>
     <div class="ProductNav">
-        <a href="../home.php">Trang chủ</a> /
-        <a href="./products.php">Sản phẩm</a> /
-        <a href="./products.php?cate=<?php echo $product['category_name']; ?>">
+        <a href="../home.php" class="productLink">Trang chủ</a> /
+        <a href="./products.php" class="productLink">Sản phẩm</a> /
+        <a href="./products.php?cate=<?php echo $product['category_name']; ?>" class="productLink">
             <?php echo $product['category_name']; ?>
         </a> /
 

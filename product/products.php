@@ -78,13 +78,13 @@
 
                         <div class="productGrid">
                             <?php
-                                $total_pages = $productControl->fetchProducts($_GET['cate'] ?? "", $_GET['price'] ?? "", $_GET['sort'] ?? "", $_GET['page'] ?? 1);
+                                $total_pages = $productControl->fetchProducts($_GET['cate'] ?? "", $_GET['price'] ?? "", $_GET['sort'] ?? "", $_GET['page'] ?? 1) ?? 1;
                             ?>
                         </div>
 
                         <div class="paginationBox">
                             <button id="prev" onclick="changePage(this, <?php echo $total_pages; ?>)">Trước</button>
-                            <input id="pageInput" min="1" max="<?php echo $total_pages; ?>" type="number" onchange="changePage(this, this.max)"/><p><?php echo " / ".$total_pages?></p>
+                            <input style="width: 40px;" id="pageInput" min="1" max="<?php echo $total_pages; ?>" type="number" onchange="changePage(this, this.max)"/><p><?php echo " / ".$total_pages?></p>
                             <button id="next" onclick="changePage(this, <?php echo $total_pages?>)">Sau</button>
                         </div>
 

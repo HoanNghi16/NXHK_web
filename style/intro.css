@@ -92,6 +92,11 @@ h2{
 
 /* about */
 
+.avatar{
+    max-width: 100px;
+    aspect-ratio: 1/1;
+}
+
 .about-project{
     margin-top:60px;
     background:rgba(255,255,255,0.08);

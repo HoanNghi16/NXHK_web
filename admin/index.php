@@ -51,31 +51,6 @@
         <div class="sidebar-heading">Chức năng chính:</div>
 
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
-          <a
-            class="nav-link collapsed"
-            href="#"
-            data-toggle="collapse"
-            data-target="#collapseTwo"
-            aria-expanded="true"
-            aria-controls="collapseTwo"
-          >
-            <i class="fas fa-calendar-day"></i>
-            <span>Danh mục sản phẩm</span>
-          </a>
-          <div
-            id="collapseTwo"
-            class="collapse"
-            aria-labelledby="headingTwo"
-            data-parent="#accordionSidebar"
-          >
-            <div class="bg-white py-2 collapse-inner rounded">
-              <h6 class="collapse-header">Các chức năng:</h6>
-              <a class="collapse-item" href="./listdanhmuc.php">Danh sách danh mục</a>
-              <a class="collapse-item" href="cards.html">Thêm mới</a>
-            </div>
-          </div>
-        </li>
 
         <li class="nav-item">
           <a
@@ -130,54 +105,6 @@
             </div>
           </div>
         </li>
-<li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseDMTT" aria-expanded="true"
-      aria-controls="collapseTwo">
-      <i class="fas fa-calendar-day"></i>
-      <span>Danh mục tin tức</span>
-    </a>
-    <div id="collapseDMTT" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-      <div class="bg-white py-2 collapse-inner rounded">
-        <h6 class="collapse-header">Các chức năng:</h6>
-        <a class="collapse-item" href="./listnewscats.php">Liệt kê</a>
-        <a class="collapse-item" href="./themdanhmuctintuc.php">Thêm mới</a>
-      </div>
-    </div>
-  </li>
-
-  <li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTT" aria-expanded="true"
-      aria-controls="collapseTwo">
-      <i class="fab fa-product-hunt"></i>
-      <span>Tin tức</span>
-    </a>
-    <div id="collapseTT" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-      <div class="bg-white py-2 collapse-inner rounded">
-        <h6 class="collapse-header">Các chức năng:</h6>
-        <a class="collapse-item" href="./listnews.php">Liệt kê</a>
-        <a class="collapse-item" href="./themtintuc.php">Thêm mới</a>
-      </div>
-    </div>
-  </li>
-        <li class="nav-item">
-          <a class="nav-link collapsed" href="#" data-toggle="collapse"data-target="#collapseFive"aria-expanded="true"aria-controls="collapseTwo">
-            <i class="fas fa-users"></i>
-            <span>Người dùng</span>
-          </a>
-          <div
-            id="collapseFive"
-            class="collapse"
-            aria-labelledby="headingTwo"
-            data-parent="#accordionSidebar"
-          >
-            <div class="bg-white py-2 collapse-inner rounded">
-              <h6 class="collapse-header">Các chức năng:</h6>
-              <a class="collapse-item" href="buttons.html">Liệt kê</a>
-              <a class="collapse-item" href="cards.html">Thêm mới</a>
-            </div>
-          </div>
-        </li>
-
         <!-- Divider -->
         <hr class="sidebar-divider" />
         <!-- Sidebar Toggler (Sidebar) -->
@@ -458,15 +385,15 @@
                 >
                   <a class="dropdown-item" href="../user/profile.php">
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Profile
+                    Hồ sơ
                   </a>
-                  <a class="dropdown-item" href="#">
+                  <a class="dropdown-item" href="../home.php">
                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Settings
+                    Trang chủ
                   </a>
-                  <a class="dropdown-item" href="#">
+                  <a class="dropdown-item" href="../product/products.php">
                     <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Activity Log
+                    Sản phẩm
                   </a>
                   <div class="dropdown-divider"></div>
                   <a
